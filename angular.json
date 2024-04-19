@@ -19,10 +19,10 @@
             "polyfills": ["zone.js"],
             "tsConfig": "tsconfig.app.json",
             "assets": ["src/favicon.ico", "src/assets"],
-            "styles": ["src/styles.css", "node_modules/bootstrap/dist/js/bootstrap.min.css"],
+            "styles": ["src/styles.css", "node_modules/bootstrap/dist/css/bootstrap.min.css"],
             "scripts": [
               "node_modules/jquery/dist/jquery.min.js",
-              "node_modules/@popperjs/dist/umd/popper.min.js",
+              "node_modules/@popperjs/core/dist/umd/popper.min.js",
               "node_modules/bootstrap/dist/js/bootstrap.min.js"
             ]
           },

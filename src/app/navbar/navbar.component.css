@@ -1,0 +1,38 @@
+nav .navbar-brand span{
+ height: fit-content;
+}
+img.img-profile{
+    max-width: 4rem;
+    max-height: 4rem;
+    border: 0.3rem solid rgba(255, 255, 255, 0.2);
+}
+@media (min-width: 992px) {
+  nav {
+    padding-left: 0;
+    padding-right: 0;
+    position: fixed;
+    top: 0;
+    left: 0;
+    display: flex;
+    flex-direction: column;
+    width: 18rem;
+    height: 100vh;
+  }
+  nav .navbar-brand {
+    display: flex;
+    padding: 0.5rem;
+  }
+  #offcanvasNavbar {
+    display: flex;
+    align-items: flex-start;
+    flex-grow: revert-layer;
+    width: 100%;
+    margin-bottom: auto;
+    flex-basis: auto;
+  }
+  #offcanvasNavbar > * {
+    flex-direction: column;
+    width: 100%;
+  }
+
+}

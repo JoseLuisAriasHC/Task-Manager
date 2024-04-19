@@ -1,0 +1,9 @@
+section{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    background: transparent;
+    z-index: 0; /* Coloca el overlay detrás del contenido principal */
+    backdrop-filter: blur(5px); /* Aplica un efecto de desenfoque al fondo */
+}
