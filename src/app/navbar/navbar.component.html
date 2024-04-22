@@ -1,19 +1,42 @@
 <nav class="navbar navbar-expand-lg bg-primary fixed-top">
-    <a class="navbar-brand" href="#">
-        <img class="img-fluid img-profile rounded-circle mx-auto mb-2" src="../../assets/img/user-solid.svg" alt="UserName">
-        <span>UserName</span>
-    </a>
+    <div class="d-flex justify-content-center align-items-center mx-3 div-navbar">
+        <img class="img-profile rounded-circle m-3" src="../../assets/img/user-solid.svg" alt="UserName">
+        <a class="navbar-brand text-truncate" href="#"> UserNameUserNameUserName</a>
+    </div>
     <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar"
         aria-controls="offcanvasNavbar" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
     </button>
     <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel">
         <div class="offcanvas-header">
-            <h5 class="offcanvas-title" id="offcanvasNavbarLabel">Offcanvas</h5>
+            <h5 class="offcanvas-title text-truncate" id="offcanvasNavbarLabel">offcanvas</h5>
             <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
         </div>
         <div class="offcanvas-body">
-            
+            <button class="btn btn-info w-100 text-start btn-add">
+                <fa-icon [icon]="faCirclePlus" class="me-2"></fa-icon>
+                Añadir Tarea
+            </button>
+            <button class="btn btn-info w-100 text-start ">
+                <fa-icon [icon]="faMagnifyingGlass" class="me-2"></fa-icon>
+                Buscar
+            </button>
+            <button class="btn btn-info w-100 text-start ">
+                <fa-icon [icon]="faInbox" class="me-2"></fa-icon>
+                Bandeja de entrada
+            </button>
+            <button class="btn btn-info w-100 text-start ">
+                <fa-icon [icon]="faCalendarDays" class="me-2"></fa-icon>
+                Seleccionar fecha
+            </button>
+            <button class="btn btn-info w-100 text-start ">
+                <fa-icon [icon]="faCalendarCheck" class="me-2"></fa-icon>
+                hoy
+            </button>
+            <button class="btn btn-info w-100 text-start ">
+                <fa-icon [icon]="faList" class="me-2"></fa-icon>
+                Filtros y etiquetas
+            </button>
         </div>
     </div>
 </nav>

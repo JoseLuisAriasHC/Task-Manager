@@ -1,10 +1,16 @@
+*{
+  color: #101916;
+}
 nav .navbar-brand span{
  height: fit-content;
 }
 img.img-profile{
-    max-width: 4rem;
-    max-height: 4rem;
+    width: 4rem;
+    height: 4rem;
     border: 0.3rem solid rgba(255, 255, 255, 0.2);
+}
+.btn-add>*,.btn-add{
+  color: #E3E5D8;
 }
 @media (min-width: 992px) {
   nav {
@@ -15,24 +21,20 @@ img.img-profile{
     left: 0;
     display: flex;
     flex-direction: column;
-    width: 18rem;
+    max-width: 18rem;
     height: 100vh;
   }
-  nav .navbar-brand {
-    display: flex;
-    padding: 0.5rem;
+  nav>div.div-navbar{
+    width: 100%;
   }
   #offcanvasNavbar {
-    display: flex;
-    align-items: flex-start;
-    flex-grow: revert-layer;
-    width: 100%;
-    margin-bottom: auto;
-    flex-basis: auto;
+    width: 100% !important;
+    padding: 1rem;
   }
-  #offcanvasNavbar > * {
-    flex-direction: column;
-    width: 100%;
+  .navbar-expand-lg .offcanvas .offcanvas-body {
+    display: block;
   }
 
 }
+
+
