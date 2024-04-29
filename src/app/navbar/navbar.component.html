@@ -1,4 +1,5 @@
 <nav class="navbar navbar-expand-lg bg-primary fixed-top">
+    <!-- header de la pantalla grande -->
     <div class="d-flex justify-content-center align-items-center mx-3 div-navbar">
         <img class="img-profile rounded-circle m-3" src="../../assets/img/user-solid.svg" alt="UserName">
         <a class="navbar-brand text-truncate" href="#"> UserNameUserNameUserName</a>
@@ -8,35 +9,38 @@
         <span class="navbar-toggler-icon"></span>
     </button>
     <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel">
+        <!-- header de la pantalla pequeña -->
         <div class="offcanvas-header">
             <h5 class="offcanvas-title text-truncate" id="offcanvasNavbarLabel">offcanvas</h5>
             <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
         </div>
+        <!-- Acciones principales del task manager -->
         <div class="offcanvas-body">
-            <button class="btn btn-info w-100 text-start btn-add">
-                <fa-icon [icon]="faCirclePlus" class="me-2"></fa-icon>
-                Añadir Tarea
-            </button>
-            <button class="btn btn-info w-100 text-start ">
-                <fa-icon [icon]="faMagnifyingGlass" class="me-2"></fa-icon>
-                Buscar
-            </button>
-            <button class="btn btn-info w-100 text-start ">
-                <fa-icon [icon]="faInbox" class="me-2"></fa-icon>
-                Bandeja de entrada
-            </button>
-            <button class="btn btn-info w-100 text-start ">
-                <fa-icon [icon]="faCalendarDays" class="me-2"></fa-icon>
-                Seleccionar fecha
-            </button>
-            <button class="btn btn-info w-100 text-start ">
-                <fa-icon [icon]="faCalendarCheck" class="me-2"></fa-icon>
-                hoy
-            </button>
-            <button class="btn btn-info w-100 text-start ">
-                <fa-icon [icon]="faList" class="me-2"></fa-icon>
-                Filtros y etiquetas
-            </button>
+            <div class="mb-3">
+                <button class="btn btn-info w-100 text-start btn-add">
+                    <fa-icon [icon]="faCirclePlus" class="me-2"></fa-icon>
+                    Añadir Tarea
+                </button>
+                <button class="btn btn-info w-100 text-start ">
+                    <fa-icon [icon]="faMagnifyingGlass" class="me-2"></fa-icon>
+                    Buscar
+                </button>
+                <button class="btn btn-info w-100 text-start ">
+                    <fa-icon [icon]="faInbox" class="me-2"></fa-icon>
+                    Bandeja de entrada
+                </button>
+                <button class="btn btn-info w-100 text-start ">
+                    <fa-icon [icon]="faCalendarDays" class="me-2"></fa-icon>
+                    Seleccionar fecha
+                </button>
+                <button class="btn btn-info w-100 text-start ">
+                    <fa-icon [icon]="faCalendarCheck" class="me-2"></fa-icon>
+                    Hoy
+                </button>
+            </div>
+
+            <!--Entornos y eventos -->
+            <app-environment-event></app-environment-event>
         </div>
     </div>
 </nav>

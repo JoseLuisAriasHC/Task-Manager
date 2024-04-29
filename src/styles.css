@@ -1,6 +1,11 @@
 /* You can add global styles to this file, and also import other style files */
 @import url('https://fonts.googleapis.com/css2?family=Noto+Serif:ital,wght@0,100..900;1,100..900&display=swap');
 * {
-    font-family: "Noto Serif", serif;
+    font-family: "Noto Serif", serif !important;
 }
+.btn-add, .btn-add>*{
+    color: #E3E5D8 !important;
+    font-weight: 600 !important;
+}
+
 

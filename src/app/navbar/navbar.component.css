@@ -9,9 +9,7 @@ img.img-profile{
     height: 4rem;
     border: 0.3rem solid rgba(255, 255, 255, 0.2);
 }
-.btn-add>*,.btn-add{
-  color: #E3E5D8;
-}
+
 @media (min-width: 992px) {
   nav {
     padding-left: 0;

@@ -1,0 +1,49 @@
+<button class="btn btn-info w-100 text-start btn-add" (click)="openModal()">
+    <fa-icon [icon]="faSquarePlus" class="me-2"></fa-icon>
+    Crear nuevo entorno
+</button>
+<!-- Modal -->
+<div class="modal" aria-hidden="false" role="dialog">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-body">
+                <input type="text" class="form-control fs-4 mb-3" placeholder="Nombre del Entorno">
+                <div class="row">
+                    <div class="col col-md-10">
+                        <input type="text" class="form-control mb-2" placeholder="Nombre del evento">
+                    </div>
+                    <div class="col col-md-2">
+                        <button class="btn btn-danger">
+                            <fa-icon [icon]="faTrash" class="m-1"></fa-icon>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary text-start me-auto">Añadir evento</button>
+                <button type="button" class="btn btn-secondary" (click)="closeModal()">Cerrar</button>
+                <button type="button" class="btn btn-primary">Crear entorno</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- Entornos y etiquetas del usuario -->
+<div>
+    <button class="btn btn-info w-100 text-start btn-enviroment">Trabajo</button>
+    <div class="px-3 py-0">
+        <div class="my-1">
+            <fa-icon [icon]="faHashtag" class="me-2"></fa-icon>
+            Crear nuevo entorno
+        </div>
+        <div class="my-1">
+            <fa-icon [icon]="faHashtag" class="me-2"></fa-icon>
+            Crear nuevo entorno
+        </div>
+        <div class="my-1">
+            <fa-icon [icon]="faHashtag" class="me-2"></fa-icon>
+            Crear nuevo entorno
+        </div>
+    </div>
+</div>

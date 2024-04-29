@@ -1,11 +1,12 @@
 import { Component } from '@angular/core';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import { faMagnifyingGlass,faCirclePlus,faInbox,faCalendarDays ,faCalendarCheck,faList} from '@fortawesome/free-solid-svg-icons';
+import { faMagnifyingGlass,faCirclePlus,faInbox,faCalendarDays ,faCalendarCheck} from '@fortawesome/free-solid-svg-icons';
+import { EnvironmentEventComponent } from '../environment-event/environment-event.component';
 
 @Component({
   selector: 'app-navbar',
   standalone: true,
-  imports: [FontAwesomeModule],
+  imports: [FontAwesomeModule,EnvironmentEventComponent],
   templateUrl: './navbar.component.html',
   styleUrl: './navbar.component.css'
 })
@@ -15,5 +16,4 @@ export class NavbarComponent {
   faInbox = faInbox;
   faCalendarDays = faCalendarDays;
   faCalendarCheck = faCalendarCheck;
-  faList = faList;
 }
