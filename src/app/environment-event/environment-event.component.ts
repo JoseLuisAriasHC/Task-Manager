@@ -1,6 +1,6 @@
 import { Component, ElementRef } from '@angular/core';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import { faSquarePlus, faHashtag,faTrash } from '@fortawesome/free-solid-svg-icons';
+import { faSquarePlus, faHashtag,faTrash,faPlus } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-environment-event',
@@ -13,6 +13,7 @@ export class EnvironmentEventComponent {
   faSquarePlus = faSquarePlus;
   faHashtag = faHashtag;
   faTrash = faTrash;
+  faPlus = faPlus;
   constructor(private el: ElementRef) {}
 
   openModal() {

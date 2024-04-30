@@ -7,7 +7,10 @@
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-body">
-                <input type="text" class="form-control fs-4 mb-3" placeholder="Nombre del Entorno">
+                <div class="text-end mb-3">
+                    <button type="button" class="btn-close" aria-label="Close" (click)="closeModal()"></button>
+                </div>
+                <input type="text" class="form-control fs-4 mb-3 form-title" placeholder="Nombre del Entorno">
                 <div class="row">
                     <div class="col col-md-10">
                         <input type="text" class="form-control mb-2" placeholder="Nombre del evento">
@@ -20,7 +23,7 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-primary text-start me-auto">Añadir evento</button>
+                <button type="button" class="btn btn-primary me-auto">Añadir evento</button>
                 <button type="button" class="btn btn-secondary" (click)="closeModal()">Cerrar</button>
                 <button type="button" class="btn btn-primary">Crear entorno</button>
             </div>
