@@ -2,35 +2,46 @@
     <fa-icon [icon]="faSquarePlus" class="me-2"></fa-icon>
     Crear nuevo entorno
 </button>
+
 <!-- Modal -->
 <div class="modal" aria-hidden="false" role="dialog">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-body">
-                <div class="text-end mb-3">
+                <div class="d-flex justify-content-between mb-2">
+                    <button type="button" class="btn border border-0" placement="start"
+                    ngbPopover="El entorno es un lugar al que te quieres referir, por ejemplo, la escuela. El evento es una actividad común que realizas en un cierto entorno, por ejemplo, exámenes."
+                    popoverTitle="¿Qué es entorno?, ¿qué es evento?">
+                        <fa-icon [icon]="faCircleInfo" class="m-1 fs-4"></fa-icon>
+                    </button>
                     <button type="button" class="btn-close" aria-label="Close" (click)="closeModal()"></button>
                 </div>
-                <input type="text" class="form-control fs-4 mb-3 form-title" placeholder="Nombre del Entorno">
+                <input type="text" [(ngModel)]="EnvironmentObj.name" class="form-control fs-4 mb-3 form-title" placeholder="Nombre del Entorno">
                 <div class="row">
                     <div class="col col-md-10">
                         <input type="text" class="form-control mb-2" placeholder="Nombre del evento">
                     </div>
                     <div class="col col-md-2">
-                        <button class="btn btn-danger">
+                        <button class="btn btn-danger" (click)="deleteEvent($event)">
                             <fa-icon [icon]="faTrash" class="m-1"></fa-icon>
                         </button>
+                    </div>
+                    <div>
+                        <span class="badge text-bg-primary position-relative">
+                            <span class="btn btn-close fs-6 position-absolute top-0 start-100 translate-middle bg-danger"></span>
+                            Primary
+                        </span>
                     </div>
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-primary me-auto">Añadir evento</button>
+                <button type="button" class="btn btn-primary me-auto" (click)="addEVent()">Añadir evento</button>
                 <button type="button" class="btn btn-secondary" (click)="closeModal()">Cerrar</button>
-                <button type="button" class="btn btn-primary">Crear entorno</button>
+                <button type="button" class="btn btn-primary" (click)="saveEnvironment()">Crear entorno</button>
             </div>
         </div>
     </div>
 </div>
-
 
 <!-- Entornos y etiquetas del usuario -->
 <div>
