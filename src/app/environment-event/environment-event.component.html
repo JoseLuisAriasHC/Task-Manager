@@ -9,33 +9,31 @@
         <div class="modal-content">
             <div class="modal-body">
                 <div class="d-flex justify-content-between mb-2">
-                    <button type="button" class="btn border border-0" placement="start"
+                    <button type="button" class="btn border border-0"  [placement]="infoPopoverPlacement"
                     ngbPopover="El entorno es un lugar al que te quieres referir, por ejemplo, la escuela. El evento es una actividad común que realizas en un cierto entorno, por ejemplo, exámenes."
                     popoverTitle="¿Qué es entorno?, ¿qué es evento?">
                         <fa-icon [icon]="faCircleInfo" class="m-1 fs-4"></fa-icon>
                     </button>
                     <button type="button" class="btn-close" aria-label="Close" (click)="closeModal()"></button>
                 </div>
+                <div class="container mb-3" id="eventsContainer">
+                    <span class="badge text-bg-primary event-span me-3 mt-1">
+                        <span># Primary</span>
+                    </span>
+                </div>
                 <input type="text" [(ngModel)]="EnvironmentObj.name" class="form-control fs-4 mb-3 form-title" placeholder="Nombre del Entorno">
                 <div class="row">
-                    <div class="col col-md-10">
-                        <input type="text" class="form-control mb-2" placeholder="Nombre del evento">
+                    <div class="col-sm-10 col-10">
+                        <input type="text" class="form-control mb-2" placeholder="Nombre del evento" #nameEvenet>
                     </div>
-                    <div class="col col-md-2">
-                        <button class="btn btn-danger" (click)="deleteEvent($event)">
-                            <fa-icon [icon]="faTrash" class="m-1"></fa-icon>
+                    <div class="col-sm-2 col-2">
+                        <button class="btn btn-success" (click)="addEvent(nameEvenet.value)" placement="end" ngbTooltip="Añadir un evento" triggers="hover">
+                            <fa-icon [icon]="faPlus" class="m-1"></fa-icon>
                         </button>
-                    </div>
-                    <div>
-                        <span class="badge text-bg-primary position-relative">
-                            <span class="btn btn-close fs-6 position-absolute top-0 start-100 translate-middle bg-danger"></span>
-                            Primary
-                        </span>
                     </div>
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-primary me-auto" (click)="addEVent()">Añadir evento</button>
                 <button type="button" class="btn btn-secondary" (click)="closeModal()">Cerrar</button>
                 <button type="button" class="btn btn-primary" (click)="saveEnvironment()">Crear entorno</button>
             </div>

@@ -1,14 +1,15 @@
 import { Component, ElementRef, Renderer2 } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import { NgbModule, NgbDatepickerModule } from '@ng-bootstrap/ng-bootstrap'; // Importa el módulo NgbModule
+import { NgbModule, NgbDatepickerModule} from '@ng-bootstrap/ng-bootstrap'; // Importa el módulo NgbModule
 import {
   faSquarePlus,
   faHashtag,
-  faTrash,
   faPlus,
   faCircleInfo
 } from '@fortawesome/free-solid-svg-icons';
+import { PlacementArray } from '@ng-bootstrap/ng-bootstrap/util/positioning';
+import { empty } from 'rxjs';
 
 
 @Component({
@@ -21,13 +22,20 @@ import {
 export class EnvironmentEventComponent {
   faSquarePlus = faSquarePlus;
   faHashtag = faHashtag;
-  faTrash = faTrash;
   faPlus = faPlus;
   faCircleInfo = faCircleInfo;
 
   EnvironmentObj: Environment = new Environment();
+  infoPopoverPlacement: PlacementArray = ['end'];
   constructor(private el: ElementRef, private renderer: Renderer2) {}
 
+  // cambiar la dirección del popover del modal según el tamaño de la pantalla
+  ngOnInit(): void {
+    const screenWidth = window.innerWidth;
+    this.infoPopoverPlacement = screenWidth < 1024 ? 'end' : 'start';
+  }
+
+  // Abrir manualmente el modal con su backdrop
   openModal() {
     const backdrop = document.createElement('div');
     backdrop.classList.add('modal-backdrop', 'fade', 'show');
@@ -35,55 +43,44 @@ export class EnvironmentEventComponent {
     this.el.nativeElement.querySelector('.modal').classList.toggle('showModal');
   }
 
+  // Cerrar manualmante el modal y eliminar su backdrop
   closeModal() {
     this.el.nativeElement.querySelector('.modal').classList.toggle('showModal');
     const backdrop = this.el.nativeElement.querySelector('.modal-backdrop');
     this.el.nativeElement.removeChild(backdrop);
   }
 
-  addEVent() {
-    console.log("si da");
-
-    const modalBody = this.el.nativeElement.querySelector('.modal-body');
-
-    // Div Row
-    const row = this.renderer.createElement('div');
-    this.renderer.addClass(row, 'row');
-
-    const divCol1 = this.renderer.createElement('div');
-    this.renderer.addClass(divCol1, 'col');
-    this.renderer.addClass(divCol1, 'col-md-10');
-
-    // Input Event
-    const input = this.renderer.createElement('input');
-    this.renderer.addClass(input, 'form-control');
-    this.renderer.addClass(input, 'mb-2');
-    this.renderer.setAttribute(input, 'type', 'text');
-    this.renderer.setAttribute(input, 'placeholder', 'Nombre del evento');
-
-    const divCol2 = this.renderer.createElement('div');
-    this.renderer.addClass(divCol2, 'col');
-    this.renderer.addClass(divCol2, 'col-md-2');
-
-    // Delete Btn
-    const button = this.renderer.createElement('button');
-    this.renderer.addClass(button, 'btn');
-    this.renderer.addClass(button, 'btn-danger');
-
-    // Icon FaTrash
-    const icon = this.renderer.createElement('fa-icon');
-    this.renderer.addClass(icon, 'm-1');
-    this.renderer.setAttribute(icon, 'icon', 'trash');
-
-    // Add elements to the DOM
-    this.renderer.appendChild(button, icon);
-    this.renderer.appendChild(divCol1, input);
-    this.renderer.appendChild(divCol2, button);
-    this.renderer.listen(button, 'click', () => this.deleteEvent(row));
-
-    this.renderer.appendChild(row, divCol1);
-    this.renderer.appendChild(row, divCol2);
-    this.renderer.appendChild(modalBody, row);
+  // Crear dinamicamente los elementos event
+  addEvent(nameEvenet: string){
+    // Obtener el contenedor de eventos y el input
+    const eventsContainer = this.el.nativeElement.querySelector('#eventsContainer');
+    if (eventsContainer ) {
+      if (nameEvenet && nameEvenet.trim() !== '') {
+        // Crear el elemento span
+        const badgeSpan = this.renderer.createElement('span');
+        this.renderer.addClass(badgeSpan, 'badge');
+        this.renderer.addClass(badgeSpan, 'text-bg-primary');
+        this.renderer.addClass(badgeSpan, 'position-relative');
+        this.renderer.addClass(badgeSpan, 'event-span');
+        this.renderer.addClass(badgeSpan, 'me-3');
+        this.renderer.addClass(badgeSpan, 'mt-1');
+  
+        // Crear el elemento span interno
+        const innerSpan = this.renderer.createElement('span');
+        const text = this.renderer.createText(nameEvenet);
+        this.renderer.appendChild(innerSpan, text);
+  
+        // Agregar el elemento span interno al elemento span principal
+        this.renderer.appendChild(badgeSpan, innerSpan);
+  
+        // Agregar el elemento span al contenedor de eventos
+        this.renderer.appendChild(eventsContainer, badgeSpan);
+      } else {
+      console.error('EL input nameEvent esta vacio o no se encuentra en el DOM');
+      }
+    }else{
+      console.error('El contenedor de eventos no se encontró en el DOM.');
+    }
   }
 
   deleteEvent(event: MouseEvent | HTMLElement) {
