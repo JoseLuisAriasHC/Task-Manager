@@ -1,0 +1,33 @@
+/* toast-container.component.css */
+.toast-container {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 1060;
+  }
+  
+  .toast {
+    width: 300px;
+    background-color: #fff;
+    margin-bottom: 10px;
+  }
+  
+  .toast-header {
+    padding: 8px;
+    
+    border-radius: 4px 4px 0 0;
+  }
+  
+  .toast-body {
+    padding: 8px;
+  }
+
+  .error>.toast-header{
+    background-color: #dc3545;
+    border-bottom: 1px solid #dc3545;
+  }
+  .success>.toast-header{
+    background-color: #198754;
+    border-bottom: 1px solid #198754;
+  }
+  

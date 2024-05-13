@@ -1,7 +1,7 @@
 import { Component, ElementRef, Renderer2 } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import { NgbModule, NgbDatepickerModule} from '@ng-bootstrap/ng-bootstrap'; // Importa el módulo NgbModule
+import { NgbModule, NgbDatepickerModule} from '@ng-bootstrap/ng-bootstrap';
 import {
   faSquarePlus,
   faHashtag,
@@ -9,16 +9,17 @@ import {
   faCircleInfo
 } from '@fortawesome/free-solid-svg-icons';
 import { PlacementArray } from '@ng-bootstrap/ng-bootstrap/util/positioning';
-import { empty } from 'rxjs';
-
+import { AppToastService } from '../app-toast.service';
+import { ToastModule } from '../app.module';
 
 @Component({
   selector: 'app-environment-event',
   standalone: true,
-  imports: [FontAwesomeModule,NgbModule,NgbDatepickerModule,FormsModule],
+  imports: [FontAwesomeModule,NgbModule,NgbDatepickerModule,FormsModule,ToastModule],
   templateUrl: './environment-event.component.html',
   styleUrl: './environment-event.component.css',
 })
+
 export class EnvironmentEventComponent {
   faSquarePlus = faSquarePlus;
   faHashtag = faHashtag;
@@ -27,7 +28,7 @@ export class EnvironmentEventComponent {
 
   EnvironmentObj: Environment = new Environment();
   infoPopoverPlacement: PlacementArray = ['end'];
-  constructor(private el: ElementRef, private renderer: Renderer2) {}
+  constructor(private el: ElementRef, private renderer: Renderer2,private toastService: AppToastService) {}
 
   // cambiar la dirección del popover del modal según el tamaño de la pantalla
   ngOnInit(): void {
@@ -76,7 +77,7 @@ export class EnvironmentEventComponent {
         // Agregar el elemento span al contenedor de eventos
         this.renderer.appendChild(eventsContainer, badgeSpan);
       } else {
-      console.error('EL input nameEvent esta vacio o no se encuentra en el DOM');
+        this.toastService.show('Error: Nombre del evento', 'Introduce el nombre del evento.','error');
       }
     }else{
       console.error('El contenedor de eventos no se encontró en el DOM.');

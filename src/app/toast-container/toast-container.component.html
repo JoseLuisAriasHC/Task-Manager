@@ -1,0 +1,15 @@
+<!-- toast-container.component.html -->
+<div class="toast-container">
+  <div *ngFor="let toast of toastService.toasts" class="toast show error" role="alert" aria-live="polite"
+    aria-atomic="true" [ngClass]="{ 'error': toast.type === 'error', 'success': toast.type === 'success' }">
+    <div class="toast-header">
+      <fa-icon *ngIf="toast.type === 'error'" [icon]="faBomb" class="m-1 me-2 fs-4"></fa-icon>
+      <fa-icon *ngIf="toast.type === 'success'" [icon]="faThumbsUp" class="m-1 me-2 fs-4"></fa-icon>
+      <strong class="me-auto">{{ toast.header }}</strong>
+      <button type="button" class="btn-close me-2" aria-label="Close" (click)="removeToast(toast)"></button>
+    </div>
+    <div class="toast-body">
+      {{ toast.body }}
+    </div>
+  </div>
+</div>
