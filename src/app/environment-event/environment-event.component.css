@@ -34,17 +34,18 @@
     background-size: contain;
     background-repeat: no-repeat;
     background-position: center;
+    margin: 0.25rem 0.5rem 0.5rem 0rem;
+    transition: background-color 0.2 ease;
 }
-.event-span>span{
-    opacity: 1;
-    transition: opacity 0.2 ease-in-out ;
-}
+
 .event-span:hover{
     cursor: pointer;
     background-image: url('../../assets/img/delete.PNG');
     background-color: rgb(220, 53, 69,0.9) !important;
 }
+
 .event-span:hover span{
     opacity: 0;
 }
+
 

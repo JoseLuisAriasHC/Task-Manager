@@ -10,24 +10,21 @@
             <div class="modal-body">
                 <div class="d-flex justify-content-between mb-2">
                     <button type="button" class="btn border border-0"  [placement]="infoPopoverPlacement"
-                    ngbPopover="El entorno es un lugar al que te quieres referir, por ejemplo, la escuela. El evento es una actividad común que realizas en un cierto entorno, por ejemplo, exámenes."
+                    ngbPopover="El entorno es un lugar donde se suelen desarrollar las tareas, por ejemplo, escuela. El evento es un tipo de tarea frecuente que realizas en un entorno, por ejemplo, exámen."
                     popoverTitle="¿Qué es entorno?, ¿qué es evento?">
                         <fa-icon [icon]="faCircleInfo" class="m-1 fs-4"></fa-icon>
                     </button>
                     <button type="button" class="btn-close" aria-label="Close" (click)="closeModal()"></button>
                 </div>
-                <div class="container mb-3" id="eventsContainer">
-                    <span class="badge text-bg-primary event-span me-3 mt-1">
-                        <span># Primary</span>
-                    </span>
+                <div class="container mb-3" #eventsContainer>
                 </div>
-                <input type="text" [(ngModel)]="EnvironmentObj.name" class="form-control fs-4 mb-3 form-title" placeholder="Nombre del Entorno">
+                <input type="text" class="form-control fs-4 mb-3 form-title" placeholder="Nombre del Entorno" #nameEnvironment>
                 <div class="row">
                     <div class="col-sm-10 col-10">
-                        <input type="text" class="form-control mb-2" placeholder="Nombre del evento" #nameEvenet>
+                        <input type="text" (keyup.enter)="addEvent()" class="form-control mb-2" placeholder="Nombre del evento" #nameEvent>
                     </div>
                     <div class="col-sm-2 col-2">
-                        <button class="btn btn-success" (click)="addEvent(nameEvenet.value)" placement="end" ngbTooltip="Añadir un evento" triggers="hover">
+                        <button class="btn btn-success" (click)="addEvent()" placement="end" ngbTooltip="Añadir un evento" triggers="hover">
                             <fa-icon [icon]="faPlus" class="m-1"></fa-icon>
                         </button>
                     </div>
