@@ -1,38 +1,66 @@
-<button class="btn btn-info w-100 text-start btn-add" (click)="openModal()">
+<hr class="border border-1 opacity-50">
+<button class="btn btn-info w-100 text-start btn-add" (click)="openModal('environmentModal')">
     <fa-icon [icon]="faSquarePlus" class="me-2"></fa-icon>
     Crear nuevo entorno
 </button>
 
 <!-- Modal -->
-<div class="modal" aria-hidden="false" role="dialog">
+<div class="modal" aria-hidden="false" role="dialog" id="environmentModal">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-body">
                 <div class="d-flex justify-content-between mb-2">
-                    <button type="button" class="btn border border-0"  [placement]="infoPopoverPlacement"
-                    ngbPopover="El entorno es un lugar donde se suelen desarrollar las tareas, por ejemplo, escuela. El evento es un tipo de tarea frecuente que realizas en un entorno, por ejemplo, exámen."
-                    popoverTitle="¿Qué es entorno?, ¿qué es evento?">
+                    <button type="button" class="btn border border-0" [placement]="infoPopoverPlacement"
+                        ngbPopover="El entorno es un lugar donde se suelen desarrollar las tareas, por ejemplo, escuela. El evento es un tipo de tarea frecuente que realizas en un entorno, por ejemplo, exámen."
+                        popoverTitle="¿Qué es entorno?, ¿qué es evento?">
+                        <fa-icon [icon]="faCircleInfo" class="m-1 fs-4"></fa-icon>
+                    </button>
+                    <button type="button" class="btn-close" aria-label="Close" (click)="closeModal()"></button>
+                </div>
+                <input type="text" [(ngModel)]="environmentObj.name" value="{{environmentObj.name}}"
+                    (keyup.enter)="openModal('eventsModal')" class="form-control fs-4 mb-3 form-title"
+                    placeholder="Nombre del Entorno" #nameEnvironment>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" (click)="closeModal()">Cerrar</button>
+                <button type="submit" class="btn btn-primary" (click)="openModal('eventsModal')">Siguiente</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal" aria-hidden="false" role="dialog" id="eventsModal">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-body">
+                <div class="d-flex justify-content-between mb-2">
+                    <button type="button" class="btn border border-0" [placement]="infoPopoverPlacement"
+                        ngbPopover="El entorno es un lugar donde se suelen desarrollar las tareas, por ejemplo, escuela. El evento es un tipo de tarea frecuente que realizas en un entorno, por ejemplo, exámen."
+                        popoverTitle="¿Qué es entorno?, ¿qué es evento?">
                         <fa-icon [icon]="faCircleInfo" class="m-1 fs-4"></fa-icon>
                     </button>
                     <button type="button" class="btn-close" aria-label="Close" (click)="closeModal()"></button>
                 </div>
                 <div class="container mb-3" #eventsContainer>
                 </div>
-                <input type="text" class="form-control fs-4 mb-3 form-title" placeholder="Nombre del Entorno" #nameEnvironment>
-                <div class="row">
-                    <div class="col-sm-10 col-10">
-                        <input type="text" (keyup.enter)="addEvent()" class="form-control mb-2" placeholder="Nombre del evento" #nameEvent>
-                    </div>
-                    <div class="col-sm-2 col-2">
-                        <button class="btn btn-success" (click)="addEvent()" placement="end" ngbTooltip="Añadir un evento" triggers="hover">
-                            <fa-icon [icon]="faPlus" class="m-1"></fa-icon>
-                        </button>
-                    </div>
+                <div class="d-flex">
+                    <input type="color" class="form-control form-control-color me-2" value="#CB3434"
+                        ngbTooltip="Color representativo del evento" #colorEvent>
+                    <input type="text" (keyup.enter)="addEvent()" class="form-control me-2"
+                        placeholder="Nombre del evento" #nameEvent>
+                    <button class="btn btn-success" (click)="addEvent()" placement="end" ngbTooltip="Añadir un evento"
+                        triggers="hover">
+                        <fa-icon [icon]="faPlus"></fa-icon>
+                    </button>
                 </div>
             </div>
             <div class="modal-footer">
+                <button type="button" class="btn btn-primary me-auto" (click)="backModal()">
+                    <fa-icon [icon]="faArrowLeftLong"></fa-icon>
+                    Atras
+                </button>
                 <button type="button" class="btn btn-secondary" (click)="closeModal()">Cerrar</button>
-                <button type="button" class="btn btn-primary" (click)="saveEnvironment()">Crear entorno</button>
+                <button type="submit" class="btn btn-primary" (click)="saveEnvironment()">Crear entorno</button>
             </div>
         </div>
     </div>
@@ -41,20 +69,23 @@
 <app-toast-container></app-toast-container>
 
 <!-- Entornos y etiquetas del usuario -->
-<div>
-    <button class="btn btn-info w-100 text-start btn-enviroment">Trabajo</button>
-    <div class="px-3 py-0">
-        <div class="my-1">
-            <fa-icon [icon]="faHashtag" class="me-2"></fa-icon>
-            Crear nuevo entorno
+<div class="mt-1 environment-container">
+    <div *ngFor="let environment of environmentList; let i = index" class="mb-3">
+        <button class="btn btn-info w-100 text-start btn-enviroment">{{environment.name}}</button>
+        <div class="ms-2 px-3 py-0">
+            <div *ngFor="let event of environment.events; let indexEve = index" class="my-1">
+                <fa-icon [icon]="faHashtag" class="me-2" [ngStyle]="{'color': environment.colors[indexEve]}"></fa-icon>
+                {{ event }}
+            </div>
         </div>
-        <div class="my-1">
-            <fa-icon [icon]="faHashtag" class="me-2"></fa-icon>
-            Crear nuevo entorno
-        </div>
-        <div class="my-1">
-            <fa-icon [icon]="faHashtag" class="me-2"></fa-icon>
-            Crear nuevo entorno
+    </div>
+    <div *ngFor="let environment of environmentList; let i = index" class="mb-3">
+        <button class="btn btn-info w-100 text-start btn-enviroment">{{environment.name}}</button>
+        <div class="ms-2 px-3 py-0">
+            <div *ngFor="let event of environment.events; let indexEve = index" class="my-1">
+                <fa-icon [icon]="faHashtag" class="me-2" [ngStyle]="{'color': environment.colors[indexEve]}"></fa-icon>
+                {{ event }}
+            </div>
         </div>
     </div>
 </div>

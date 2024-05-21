@@ -29,13 +29,11 @@
 }
 
 .event-span{
-    border: 1px solid #355245;
     transition: background-image 0.2s ease;
     background-size: contain;
     background-repeat: no-repeat;
     background-position: center;
     margin: 0.25rem 0.5rem 0.5rem 0rem;
-    transition: background-color 0.2 ease;
 }
 
 .event-span:hover{
@@ -48,4 +46,11 @@
     opacity: 0;
 }
 
+hr{
+    color: #355245;
+}
+
+.environment-container{
+    
+}
 

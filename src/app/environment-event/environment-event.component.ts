@@ -1,71 +1,109 @@
-import { Component, ElementRef, Renderer2, ViewChild } from '@angular/core';
+import { Component, ElementRef, Renderer2, ViewChild} from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import { NgbModule, NgbDatepickerModule} from '@ng-bootstrap/ng-bootstrap';
+import { NgbModule, NgbDatepickerModule } from '@ng-bootstrap/ng-bootstrap';
 import {
   faSquarePlus,
   faHashtag,
   faPlus,
-  faCircleInfo
+  faCircleInfo,
+  faArrowLeftLong,
 } from '@fortawesome/free-solid-svg-icons';
 import { PlacementArray } from '@ng-bootstrap/ng-bootstrap/util/positioning';
 import { AppToastService } from '../app-toast.service';
 import { ToastModule } from '../app.module';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-environment-event',
   standalone: true,
-  imports: [FontAwesomeModule,NgbModule,NgbDatepickerModule,FormsModule,ToastModule],
+  imports: [
+    FontAwesomeModule,
+    NgbModule,
+    NgbDatepickerModule,
+    FormsModule,
+    ToastModule,
+    CommonModule
+  ],
   templateUrl: './environment-event.component.html',
   styleUrl: './environment-event.component.css',
 })
-
 export class EnvironmentEventComponent {
   // iconos
   faSquarePlus = faSquarePlus;
   faHashtag = faHashtag;
   faPlus = faPlus;
   faCircleInfo = faCircleInfo;
+  faArrowLeftLong = faArrowLeftLong;
 
   @ViewChild('nameEnvironment') environmentInput!: ElementRef;
+  @ViewChild('colorEvent') colorEvent!: ElementRef;
   @ViewChild('nameEvent') eventInput!: ElementRef;
   @ViewChild('eventsContainer') eventsContainer!: ElementRef;
 
-  EnvironmentObj: Environment = new Environment();
   infoPopoverPlacement: PlacementArray = ['end'];
-  constructor(private el: ElementRef, private renderer: Renderer2,private toastService: AppToastService) {}
-  
+  environmentObj: Environment = new Environment();
+  environmentList: Environment[] = [];
+
+  constructor(
+    private el: ElementRef,
+    private renderer: Renderer2,
+    private toastService: AppToastService
+  ) {}
+
   // Crear dinamicamente los elementos event
-  addEvent(){
+  addEvent() {
     // Obtener el contenedor de eventos y el input value
     let nameEvent = this.eventInput.nativeElement.value.trim();
-    if (this.eventsContainer.nativeElement ) {
+    if (this.eventsContainer.nativeElement) {
       if (nameEvent !== '') {
-        // Crear badge button 
+        // Crear badge button
         const badgeButton = this.renderer.createElement('button');
         this.renderer.addClass(badgeButton, 'badge');
         this.renderer.addClass(badgeButton, 'text-bg-primary');
         this.renderer.addClass(badgeButton, 'position-relative');
         this.renderer.addClass(badgeButton, 'event-span');
-        this.renderer.listen(badgeButton,'click',(event) => this.deleteEvent(event))
-  
+        this.renderer.setStyle(
+          badgeButton,
+          'border',
+          '1px solid ' + this.colorEvent.nativeElement.value
+        );
+        this.renderer.listen(badgeButton, 'click', (event) =>
+          this.deleteEvent(event)
+        );
+
         // Crear span interno
         const span = this.renderer.createElement('span');
-        const text = this.renderer.createText('# ' + nameEvent);
-        this.renderer.appendChild(span, text);
-  
+        const spanText = this.renderer.createText('# ' + nameEvent);
+        this.renderer.setStyle(
+          span,
+          'color',
+          this.colorEvent.nativeElement.value
+        );
+        this.renderer.appendChild(span, spanText);
+
         // Agregar span interno al elemento span principal
         this.renderer.appendChild(badgeButton, span);
-        this.renderer.appendChild(this.eventsContainer.nativeElement, badgeButton);
+        this.renderer.appendChild(
+          this.eventsContainer.nativeElement,
+          badgeButton
+        );
 
-        // guardar su valor en el events de la clase environments
-        this.EnvironmentObj.events.push(nameEvent);
+        // Guardar el nombre y color del evento
+        this.environmentObj.events.push(nameEvent);
+        this.environmentObj.colors.push(this.colorEvent.nativeElement.value);
         // Resetear value del input
         this.eventInput.nativeElement.value = '';
+        this.colorEvent.nativeElement.value = '#CB3434';
       } else {
-        this.toastService.show('Error: Nombre del evento', 'Introduce el nombre del evento.','error',10000);
+        this.toastService.show(
+          'Error: Nombre del evento',
+          'Introduce el nombre del evento.',
+          'error',
+          10000
+        );
       }
-    }else{
+    } else {
       console.error('El contenedor de eventos no se encontró en el DOM.');
     }
   }
@@ -75,70 +113,117 @@ export class EnvironmentEventComponent {
     // Obtener el button y el span
     const button = event.currentTarget as HTMLElement;
     let span = button.querySelector('span');
-    
+
     if (span && span.textContent) {
       let nameEvent = span.textContent;
-      let index = this.EnvironmentObj.events.indexOf(nameEvent);
-      this.EnvironmentObj.events.splice(index,1);
+      let index = this.environmentObj.events.indexOf(nameEvent);
+      this.environmentObj.events.splice(index, 1);
+      this.environmentObj.colors.splice(index, 1);
       this.renderer.removeChild(this.eventsContainer.nativeElement, button);
-    } else{
+    } else {
       console.error('El elemento span del button no se encuentra en el DOM.');
     }
   }
-  // Guardar EnvironmentObj en BD local
-  saveEnvironment(){
-    // Guardar el nombre del Environment en el Obj
-    if (this.environmentInput.nativeElement.value.trim() != '' &&  this.EnvironmentObj.events.length > 0) {
-      this.EnvironmentObj.name = this.environmentInput.nativeElement.value;
-      const localStore = localStorage.getItem('tableEnvironments');
-      if (localStore !== null) {
-        console.log("asd ");
-        
+
+  // Guardar environmentObj en BD local
+  saveEnvironment() {
+    if (
+      this.environmentInput.nativeElement.value.trim() != '' &&
+      this.environmentObj.events.length > 0
+    ) {
+      // Guardar el nombre del Environment en el Obj
+      const tableEnvironments = localStorage.getItem('tableEnvironments');
+      if (tableEnvironments !== null) {
+        let tableArray = JSON.parse(tableEnvironments);
+        tableArray.push(this.environmentObj);
+        this.environmentList = tableArray;
+        localStorage.setItem('tableEnvironments', JSON.stringify(tableArray));
       } else {
-        let environmentArray = [];
-        environmentArray.push(this.EnvironmentObj);
-        localStorage.setItem('tableEnvironments',JSON.stringify(environmentArray));
+        let tableArray = [];
+        tableArray.push(this.environmentObj);
+        this.environmentList = tableArray
+        localStorage.setItem(
+          'tableEnvironments',
+          JSON.stringify(tableArray)
+        );
       }
+      this.closeActualModal();
+      this.removeBackDrop();
+      this.environmentObj = new Environment();
     } else {
-      this.toastService.show('Faltan datos', 'Debes introducir el nombre del entorno y almenos un evento.','error',10000);
-
+      this.toastService.show(
+        'Faltan datos',
+        'Debes introducir el nombre del entorno y almenos un evento.',
+        'error',
+        10000
+      );
     }
-
   }
 
-  // cambiar la dirección del popover del modal según el tamaño de la pantalla
   ngOnInit(): void {
+    // localStorage.removeItem('tableEnvironments');
+    // Obtener lista de environments
+    const tableEnvironments = localStorage.getItem('tableEnvironments');
+    if (tableEnvironments != null) {
+      this.environmentList = JSON.parse(tableEnvironments);
+    }
+
+    // cambiar la dirección del popover del modal según el tamaño de la pantalla
     const screenWidth = window.innerWidth;
     this.infoPopoverPlacement = screenWidth < 1024 ? 'end' : 'start';
   }
 
   // Abrir manualmente el modal con su backdrop
-  openModal() {
-    const backdrop = document.createElement('div');
-    backdrop.classList.add('modal-backdrop', 'fade', 'show');
-    this.el.nativeElement.appendChild(backdrop);
-    this.el.nativeElement.querySelector('.modal').classList.toggle('showModal');
+  openModal(idModal: string) {
+    const existingBackdrop =
+      this.el.nativeElement.querySelector('.modal-backdrop');
+    if (!existingBackdrop) {
+      const backdrop = document.createElement('div');
+      backdrop.classList.add('modal-backdrop', 'fade', 'show');
+      this.el.nativeElement.appendChild(backdrop);
+    }
+    const existingModal = this.el.nativeElement.querySelector('.showModal');
+    if (existingModal) {
+      existingModal.classList.toggle('showModal');
+    }
+    this.el.nativeElement
+      .querySelector('.modal#' + idModal)
+      .classList.toggle('showModal');
   }
 
   // Cerrar manualmante el modal y eliminar su backdrop
   closeModal() {
-    this.el.nativeElement.querySelector('.modal').classList.toggle('showModal');
-    const backdrop = this.el.nativeElement.querySelector('.modal-backdrop');
-    this.el.nativeElement.removeChild(backdrop);
-    
+    this.closeActualModal();
+    this.removeBackDrop();
+
     // Resetear el modal
     this.environmentInput.nativeElement.value = '';
     this.eventInput.nativeElement.value = '';
-    this.eventsContainer.nativeElement.innerHTML  = ''
-    // Resetear EnvironmentObj
-    this.EnvironmentObj.name = '';
-    this.EnvironmentObj.events = [];
-    console.log(this.EnvironmentObj);
+    this.eventsContainer.nativeElement.innerHTML = '';
+    // Resetear environmentObj
+    this.environmentObj = new Environment();
+  }
+
+  backModal() {
+    this.closeActualModal();
+    this.el.nativeElement
+      .querySelector('.modal#environmentModal')
+      .classList.toggle('showModal');
+  }
+
+  closeActualModal() {
+    const existingModal = this.el.nativeElement.querySelector('.showModal');
+    existingModal.classList.toggle('showModal');
+  }
+
+  removeBackDrop() {
+    const backdrop = this.el.nativeElement.querySelector('.modal-backdrop');
+    this.el.nativeElement.removeChild(backdrop);
   }
 }
 
-export class Environment{
+export class Environment {
   name: string = '';
+  colors: string[] = [];
   events: string[] = [];
 }
-
