@@ -1,4 +1,4 @@
-import { Component, ElementRef, Renderer2, ViewChild} from '@angular/core';
+import { Component, ElementRef, Renderer2, ViewChild } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { NgbModule, NgbDatepickerModule } from '@ng-bootstrap/ng-bootstrap';
@@ -11,8 +11,10 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import { PlacementArray } from '@ng-bootstrap/ng-bootstrap/util/positioning';
 import { AppToastService } from '../app-toast.service';
-import { ToastModule } from '../app.module';
+import { ToastModule } from '../toast.module';
 import { CommonModule } from '@angular/common';
+import { v4 as uuidv4 } from 'uuid';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-environment-event',
@@ -23,7 +25,8 @@ import { CommonModule } from '@angular/common';
     NgbDatepickerModule,
     FormsModule,
     ToastModule,
-    CommonModule
+    CommonModule,
+    RouterLink
   ],
   templateUrl: './environment-event.component.html',
   styleUrl: './environment-event.component.css',
@@ -50,6 +53,16 @@ export class EnvironmentEventComponent {
     private renderer: Renderer2,
     private toastService: AppToastService
   ) {}
+
+  ngOnInit(): void {
+    // localStorage.removeItem('tableEnvironments');
+    // Obtener lista de environments
+    this.environmentList = Environment.list();
+
+    // cambiar la dirección del popover del modal según el tamaño de la pantalla
+    const screenWidth = window.innerWidth;
+    this.infoPopoverPlacement = screenWidth < 1024 ? 'end' : 'start';
+  }
 
   // Crear dinamicamente los elementos event
   addEvent() {
@@ -135,17 +148,16 @@ export class EnvironmentEventComponent {
       const tableEnvironments = localStorage.getItem('tableEnvironments');
       if (tableEnvironments !== null) {
         let tableArray = JSON.parse(tableEnvironments);
+        this.environmentObj.id = uuidv4();
         tableArray.push(this.environmentObj);
         this.environmentList = tableArray;
         localStorage.setItem('tableEnvironments', JSON.stringify(tableArray));
       } else {
         let tableArray = [];
+        this.environmentObj.id = uuidv4();
         tableArray.push(this.environmentObj);
-        this.environmentList = tableArray
-        localStorage.setItem(
-          'tableEnvironments',
-          JSON.stringify(tableArray)
-        );
+        this.environmentList = tableArray;
+        localStorage.setItem('tableEnvironments', JSON.stringify(tableArray));
       }
       this.closeActualModal();
       this.removeBackDrop();
@@ -158,19 +170,6 @@ export class EnvironmentEventComponent {
         10000
       );
     }
-  }
-
-  ngOnInit(): void {
-    // localStorage.removeItem('tableEnvironments');
-    // Obtener lista de environments
-    const tableEnvironments = localStorage.getItem('tableEnvironments');
-    if (tableEnvironments != null) {
-      this.environmentList = JSON.parse(tableEnvironments);
-    }
-
-    // cambiar la dirección del popover del modal según el tamaño de la pantalla
-    const screenWidth = window.innerWidth;
-    this.infoPopoverPlacement = screenWidth < 1024 ? 'end' : 'start';
   }
 
   // Abrir manualmente el modal con su backdrop
@@ -223,7 +222,23 @@ export class EnvironmentEventComponent {
 }
 
 export class Environment {
+  id: string = '';
   name: string = '';
   colors: string[] = [];
   events: string[] = [];
+
+  static list(): Environment[] {
+    const tableEnvironments = localStorage.getItem('tableEnvironments');
+    if (tableEnvironments != null) {
+      return JSON.parse(tableEnvironments);
+    }
+    return [];
+  }
+
+  static findEnvironmentById(id: string): Environment | undefined {
+    let list: Environment[] = [];
+    list = Environment.list();
+    return list.find(env => env.id === id);
+  }
+  
 }

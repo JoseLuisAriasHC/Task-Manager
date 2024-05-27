@@ -3,9 +3,25 @@
 * {
     font-family: "Noto Serif", serif !important;
 }
+body{
+    padding-left: 18rem;
+}
 .btn-add, .btn-add>*{
     color: #E3E5D8 !important;
     font-weight: 600 !important;
 }
 
+@media (max-width: 425px) {
+    body{
+        padding-left: 0rem;
+        padding-top: 3.5rem;
+    }
+}
+
+@media (min-width: 426px) and (max-width: 991px) {
+    body{
+        padding-left: 0rem;
+        padding-top: 7rem;
+    }
+}
 

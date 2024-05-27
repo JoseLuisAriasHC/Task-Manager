@@ -1,0 +1,23 @@
+div.container-fluid{
+    padding: 4rem 3rem 4rem 3rem;
+}
+h2{
+    color: #2C5F52;
+}
+.nameEvent{
+    font-size: large;
+    font-weight: 600;
+    color: #648374;
+}
+.eventContainer{
+    margin-left: 1rem;
+    border-radius: 0.2rem;
+    padding: 0.25rem 0.75rem 0.25rem 0.75rem;
+    transition: background-color 0.2s ease;
+}
+.eventContainer:hover{
+    background-color: rgb(227, 229, 216,0.5);
+}
+.eventContainer:hover .nameEvent{
+    color: #101916;
+}

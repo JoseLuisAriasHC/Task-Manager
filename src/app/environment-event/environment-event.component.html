@@ -69,18 +69,9 @@
 <app-toast-container></app-toast-container>
 
 <!-- Entornos y etiquetas del usuario -->
-<div class="mt-1 environment-container">
+<div class="mt-1">
     <div *ngFor="let environment of environmentList; let i = index" class="mb-3">
-        <button class="btn btn-info w-100 text-start btn-enviroment">{{environment.name}}</button>
-        <div class="ms-2 px-3 py-0">
-            <div *ngFor="let event of environment.events; let indexEve = index" class="my-1">
-                <fa-icon [icon]="faHashtag" class="me-2" [ngStyle]="{'color': environment.colors[indexEve]}"></fa-icon>
-                {{ event }}
-            </div>
-        </div>
-    </div>
-    <div *ngFor="let environment of environmentList; let i = index" class="mb-3">
-        <button class="btn btn-info w-100 text-start btn-enviroment">{{environment.name}}</button>
+        <button class="btn btn-info w-100 text-start btn-enviroment" routerLink="/event-list">{{environment.name}}</button>
         <div class="ms-2 px-3 py-0">
             <div *ngFor="let event of environment.events; let indexEve = index" class="my-1">
                 <fa-icon [icon]="faHashtag" class="me-2" [ngStyle]="{'color': environment.colors[indexEve]}"></fa-icon>

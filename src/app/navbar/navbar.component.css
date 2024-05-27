@@ -1,6 +1,10 @@
 *{
   color: #101916;
 }
+nav.navbar{
+  overflow-y: inherit;
+  overflow-x: hidden;
+}
 nav .navbar-brand span{
  height: fit-content;
 }
@@ -33,6 +37,21 @@ img.img-profile{
     display: block;
   }
 
+}
+
+@media (max-width: 425px) {
+  img{
+    display: none;
+  }
+  a.navbar-brand{
+    width: 215px;
+  }
+}
+
+@media (min-width: 425px) and (max-width: 500px) {
+  a.navbar-brand{
+    width: 225px;
+  }
 }
 
 
