@@ -11,6 +11,16 @@ body{
     font-weight: 600 !important;
 }
 
+.modal{
+    display: none;
+    opacity: 0;
+    transition: opacity .25s linear;
+}
+.showModal{
+    display: block !important;
+    opacity: 1 !important;
+}
+
 @media (max-width: 425px) {
     body{
         padding-left: 0rem;

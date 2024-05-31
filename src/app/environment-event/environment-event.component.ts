@@ -1,7 +1,14 @@
 import { Component, ElementRef, Renderer2, ViewChild } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { NgbModule, NgbDatepickerModule } from '@ng-bootstrap/ng-bootstrap';
+import { PlacementArray } from '@ng-bootstrap/ng-bootstrap/util/positioning';
+import { AppToastService } from '../global/toast/app-toast.service'; // Toast
+import { ToastModule } from '../global/toast/toast.module'; // Toast
+import { ModalService } from '../global/modal/modal.service';
+import { CommonModule } from '@angular/common'; // Para el if o for en html
+import { v4 as uuidv4 } from 'uuid'; // id único
+import { RouterLink } from '@angular/router';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome'; // iconos fontawesome
 import {
   faSquarePlus,
   faHashtag,
@@ -9,12 +16,6 @@ import {
   faCircleInfo,
   faArrowLeftLong,
 } from '@fortawesome/free-solid-svg-icons';
-import { PlacementArray } from '@ng-bootstrap/ng-bootstrap/util/positioning';
-import { AppToastService } from '../app-toast.service';
-import { ToastModule } from '../toast.module';
-import { CommonModule } from '@angular/common';
-import { v4 as uuidv4 } from 'uuid';
-import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-environment-event',
@@ -26,7 +27,7 @@ import { RouterLink } from '@angular/router';
     FormsModule,
     ToastModule,
     CommonModule,
-    RouterLink
+    RouterLink,
   ],
   templateUrl: './environment-event.component.html',
   styleUrl: './environment-event.component.css',
@@ -51,7 +52,8 @@ export class EnvironmentEventComponent {
   constructor(
     private el: ElementRef,
     private renderer: Renderer2,
-    private toastService: AppToastService
+    private toastService: AppToastService,
+    private modalService: ModalService
   ) {}
 
   ngOnInit(): void {
@@ -159,13 +161,12 @@ export class EnvironmentEventComponent {
         this.environmentList = tableArray;
         localStorage.setItem('tableEnvironments', JSON.stringify(tableArray));
       }
-      this.closeActualModal();
-      this.removeBackDrop();
+      this.modalService.closeModal(this.el);
       this.environmentObj = new Environment();
     } else {
       this.toastService.show(
         'Faltan datos',
-        'Debes introducir el nombre del entorno y almenos un evento.',
+        'Debes introducir el nombre del entorno y al menos un evento.',
         'error',
         10000
       );
@@ -174,26 +175,12 @@ export class EnvironmentEventComponent {
 
   // Abrir manualmente el modal con su backdrop
   openModal(idModal: string) {
-    const existingBackdrop =
-      this.el.nativeElement.querySelector('.modal-backdrop');
-    if (!existingBackdrop) {
-      const backdrop = document.createElement('div');
-      backdrop.classList.add('modal-backdrop', 'fade', 'show');
-      this.el.nativeElement.appendChild(backdrop);
-    }
-    const existingModal = this.el.nativeElement.querySelector('.showModal');
-    if (existingModal) {
-      existingModal.classList.toggle('showModal');
-    }
-    this.el.nativeElement
-      .querySelector('.modal#' + idModal)
-      .classList.toggle('showModal');
+    this.modalService.openModal(this.el, idModal);
   }
 
-  // Cerrar manualmante el modal y eliminar su backdrop
+  // Cerrar manualmante el modal y resetear valores
   closeModal() {
-    this.closeActualModal();
-    this.removeBackDrop();
+    this.modalService.closeModal(this.el);
 
     // Resetear el modal
     this.environmentInput.nativeElement.value = '';
@@ -204,20 +191,7 @@ export class EnvironmentEventComponent {
   }
 
   backModal() {
-    this.closeActualModal();
-    this.el.nativeElement
-      .querySelector('.modal#environmentModal')
-      .classList.toggle('showModal');
-  }
-
-  closeActualModal() {
-    const existingModal = this.el.nativeElement.querySelector('.showModal');
-    existingModal.classList.toggle('showModal');
-  }
-
-  removeBackDrop() {
-    const backdrop = this.el.nativeElement.querySelector('.modal-backdrop');
-    this.el.nativeElement.removeChild(backdrop);
+    this.modalService.backModal(this.el, 'environmentModal');
   }
 }
 
@@ -235,10 +209,30 @@ export class Environment {
     return [];
   }
 
-  static findEnvironmentById(id: string): Environment | undefined {
+  static getByID(id: string): Environment | undefined {
     let list: Environment[] = [];
     list = Environment.list();
-    return list.find(env => env.id === id);
+    return list.find((env) => env.id === id);
   }
-  
+
+  static update(idToUpdate: string, updatedData: Partial<Environment>) {
+    const tableEnvironments = localStorage.getItem('tableEnvironments');
+    if (tableEnvironments) {
+      const environments = JSON.parse(tableEnvironments);
+      // Encontrar el índice en base a su id para actualizarlo
+      const index = environments.findIndex(
+        (env: { id: string }) => env.id === idToUpdate
+      );
+      if (index !== -1) {
+        // Actualizar el elemento con los nuevos datos
+        environments[index] = { ...environments[index], ...updatedData };
+        // Guardar la tabla actualizada de vuelta en el localStorage
+        localStorage.setItem('tableEnvironments', JSON.stringify(environments));
+      } else {
+        console.error('ID no encontrado');
+      }
+    } else {
+      console.error('No se encontró ninguna tabla en el localStorage');
+    }
+  }
 }
