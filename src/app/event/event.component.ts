@@ -4,10 +4,11 @@ import { faHashtag, faPlus, faTrash } from '@fortawesome/free-solid-svg-icons';
 import { ActivatedRoute, Router } from '@angular/router'; // Para leer el id de la Url
 import { Subscription } from 'rxjs'; // Para detectar cambios en la Url
 import { CommonModule } from '@angular/common'; // Para el if o for en html
-import { Environment } from '../environment-event/environment-event.component'; // Para usar el Obj Environment
 import { NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap'; // Tooltip
-import { ModalService } from '../global/modal/modal.service';
-import { AppToastService } from '../global/toast/app-toast.service';
+
+import { ModalService } from '../services/modal/modal.service';
+import { AppToastService } from '../services/toast/app-toast.service';
+import { Environment, EnvironmentService } from '../services/environment/environment.service';
 
 @Component({
   selector: 'app-event',
@@ -26,12 +27,14 @@ export class EventComponent {
 
   environmentObj: Environment = new Environment();
   paramSubscription: Subscription | undefined;
+
   constructor(
     private el: ElementRef,
     private route: ActivatedRoute,
     private router: Router,
     private modalService: ModalService,
     private toastService: AppToastService,
+    private environmentService: EnvironmentService
   ) {}
 
   ngOnInit(): void {
@@ -60,7 +63,7 @@ export class EventComponent {
     if (nameEvent !== '') {
       this.environmentObj.events.push(nameEvent);
       this.environmentObj.colors.push(this.colorInput.nativeElement.value);
-      Environment.update(this.environmentObj.id, this.environmentObj);
+      this.environmentService.addEvent(this.environmentObj.id, this.environmentObj);
       this.closeModal();
     }else{
       this.toastService.show(
@@ -80,7 +83,6 @@ export class EventComponent {
   // Cerrar manualmante el modal y resetear valores
   closeModal() {
     this.modalService.closeModal(this.el);
-
     this.eventInput.nativeElement.value = '';
   }
 }

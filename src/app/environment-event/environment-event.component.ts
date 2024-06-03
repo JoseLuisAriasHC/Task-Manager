@@ -2,9 +2,6 @@ import { Component, ElementRef, Renderer2, ViewChild } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { NgbModule, NgbDatepickerModule } from '@ng-bootstrap/ng-bootstrap';
 import { PlacementArray } from '@ng-bootstrap/ng-bootstrap/util/positioning';
-import { AppToastService } from '../global/toast/app-toast.service'; // Toast
-import { ToastModule } from '../global/toast/toast.module'; // Toast
-import { ModalService } from '../global/modal/modal.service';
 import { CommonModule } from '@angular/common'; // Para el if o for en html
 import { v4 as uuidv4 } from 'uuid'; // id único
 import { RouterLink } from '@angular/router';
@@ -16,6 +13,14 @@ import {
   faCircleInfo,
   faArrowLeftLong,
 } from '@fortawesome/free-solid-svg-icons';
+
+import { AppToastService } from '../services/toast/app-toast.service'; // Toast
+import { ToastModule } from '../services/toast/toast.module'; // Toast
+import { ModalService } from '../services/modal/modal.service';
+import {
+  EnvironmentService,
+  Environment,
+} from '../services/environment/environment.service';
 
 @Component({
   selector: 'app-environment-event',
@@ -53,14 +58,14 @@ export class EnvironmentEventComponent {
     private el: ElementRef,
     private renderer: Renderer2,
     private toastService: AppToastService,
-    private modalService: ModalService
+    private modalService: ModalService,
+    private environmentService: EnvironmentService
   ) {}
 
   ngOnInit(): void {
-    // localStorage.removeItem('tableEnvironments');
-    // Obtener lista de environments
-    this.environmentList = Environment.list();
-
+    this.environmentService
+      .getList()
+      .subscribe((environments) => (this.environmentList = environments));
     // cambiar la dirección del popover del modal según el tamaño de la pantalla
     const screenWidth = window.innerWidth;
     this.infoPopoverPlacement = screenWidth < 1024 ? 'end' : 'start';
@@ -142,27 +147,16 @@ export class EnvironmentEventComponent {
 
   // Guardar environmentObj en BD local
   saveEnvironment() {
+    debugger;
     if (
       this.environmentInput.nativeElement.value.trim() != '' &&
       this.environmentObj.events.length > 0
     ) {
       // Guardar el nombre del Environment en el Obj
-      const tableEnvironments = localStorage.getItem('tableEnvironments');
-      if (tableEnvironments !== null) {
-        let tableArray = JSON.parse(tableEnvironments);
-        this.environmentObj.id = uuidv4();
-        tableArray.push(this.environmentObj);
-        this.environmentList = tableArray;
-        localStorage.setItem('tableEnvironments', JSON.stringify(tableArray));
-      } else {
-        let tableArray = [];
-        this.environmentObj.id = uuidv4();
-        tableArray.push(this.environmentObj);
-        this.environmentList = tableArray;
-        localStorage.setItem('tableEnvironments', JSON.stringify(tableArray));
-      }
-      this.modalService.closeModal(this.el);
-      this.environmentObj = new Environment();
+      this.environmentObj.id = uuidv4();
+      this.environmentService.addEnvironment(this.environmentObj);
+      this.closeModal();
+      console.log(this.environmentObj);
     } else {
       this.toastService.show(
         'Faltan datos',
@@ -180,59 +174,18 @@ export class EnvironmentEventComponent {
 
   // Cerrar manualmante el modal y resetear valores
   closeModal() {
-    this.modalService.closeModal(this.el);
-
+    debugger;
     // Resetear el modal
     this.environmentInput.nativeElement.value = '';
     this.eventInput.nativeElement.value = '';
     this.eventsContainer.nativeElement.innerHTML = '';
     // Resetear environmentObj
     this.environmentObj = new Environment();
+
+    this.modalService.closeModal(this.el);
   }
 
   backModal() {
     this.modalService.backModal(this.el, 'environmentModal');
-  }
-}
-
-export class Environment {
-  id: string = '';
-  name: string = '';
-  colors: string[] = [];
-  events: string[] = [];
-
-  static list(): Environment[] {
-    const tableEnvironments = localStorage.getItem('tableEnvironments');
-    if (tableEnvironments != null) {
-      return JSON.parse(tableEnvironments);
-    }
-    return [];
-  }
-
-  static getByID(id: string): Environment | undefined {
-    let list: Environment[] = [];
-    list = Environment.list();
-    return list.find((env) => env.id === id);
-  }
-
-  static update(idToUpdate: string, updatedData: Partial<Environment>) {
-    const tableEnvironments = localStorage.getItem('tableEnvironments');
-    if (tableEnvironments) {
-      const environments = JSON.parse(tableEnvironments);
-      // Encontrar el índice en base a su id para actualizarlo
-      const index = environments.findIndex(
-        (env: { id: string }) => env.id === idToUpdate
-      );
-      if (index !== -1) {
-        // Actualizar el elemento con los nuevos datos
-        environments[index] = { ...environments[index], ...updatedData };
-        // Guardar la tabla actualizada de vuelta en el localStorage
-        localStorage.setItem('tableEnvironments', JSON.stringify(environments));
-      } else {
-        console.error('ID no encontrado');
-      }
-    } else {
-      console.error('No se encontró ninguna tabla en el localStorage');
-    }
   }
 }

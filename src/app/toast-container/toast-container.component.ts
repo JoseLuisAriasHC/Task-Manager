@@ -1,6 +1,6 @@
 // toast-container.component.ts
 import { Component } from '@angular/core';
-import { AppToastService, ToastInfo } from '../global/toast/app-toast.service';
+import { AppToastService, ToastInfo } from '../services/toast/app-toast.service';
 import { faBomb, } from '@fortawesome/free-solid-svg-icons'
 import { faThumbsUp } from '@fortawesome/free-regular-svg-icons'
 
