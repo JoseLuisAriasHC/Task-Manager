@@ -1,10 +1,11 @@
 import { Component, ElementRef, Renderer2, ViewChild } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { CommonModule } from '@angular/common'; // Para el if o for en html
+import { RouterLink } from '@angular/router';
+
 import { NgbModule, NgbDatepickerModule } from '@ng-bootstrap/ng-bootstrap';
 import { PlacementArray } from '@ng-bootstrap/ng-bootstrap/util/positioning';
-import { CommonModule } from '@angular/common'; // Para el if o for en html
 import { v4 as uuidv4 } from 'uuid'; // id único
-import { RouterLink } from '@angular/router';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome'; // iconos fontawesome
 import {
   faSquarePlus,
@@ -147,7 +148,6 @@ export class EnvironmentEventComponent {
 
   // Guardar environmentObj en BD local
   saveEnvironment() {
-    debugger;
     if (
       this.environmentInput.nativeElement.value.trim() != '' &&
       this.environmentObj.events.length > 0
@@ -156,7 +156,6 @@ export class EnvironmentEventComponent {
       this.environmentObj.id = uuidv4();
       this.environmentService.addEnvironment(this.environmentObj);
       this.closeModal();
-      console.log(this.environmentObj);
     } else {
       this.toastService.show(
         'Faltan datos',
@@ -174,7 +173,6 @@ export class EnvironmentEventComponent {
 
   // Cerrar manualmante el modal y resetear valores
   closeModal() {
-    debugger;
     // Resetear el modal
     this.environmentInput.nativeElement.value = '';
     this.eventInput.nativeElement.value = '';

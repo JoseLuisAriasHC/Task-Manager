@@ -8,7 +8,10 @@ import { NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap'; // Tooltip
 
 import { ModalService } from '../services/modal/modal.service';
 import { AppToastService } from '../services/toast/app-toast.service';
-import { Environment, EnvironmentService } from '../services/environment/environment.service';
+import {
+  Environment,
+  EnvironmentService,
+} from '../services/environment/environment.service';
 
 @Component({
   selector: 'app-event',
@@ -38,7 +41,7 @@ export class EventComponent {
   ) {}
 
   ngOnInit(): void {
-    // Leer la url para poder cambiar el Environment 
+    // Leer la url para poder cambiar el Environment
     this.paramSubscription = this.route.paramMap.subscribe((paramMap) => {
       const id = paramMap.get('id');
       if (id) {
@@ -46,7 +49,7 @@ export class EventComponent {
         if (environment !== undefined) {
           this.environmentObj = environment;
         } else {
-          // this.router.navigate(['/not-found']);
+          this.router.navigate(['**']);
         }
       }
     });
@@ -63,9 +66,12 @@ export class EventComponent {
     if (nameEvent !== '') {
       this.environmentObj.events.push(nameEvent);
       this.environmentObj.colors.push(this.colorInput.nativeElement.value);
-      this.environmentService.addEvent(this.environmentObj.id, this.environmentObj);
+      this.environmentService.updateEnvironment(
+        this.environmentObj.id,
+        this.environmentObj
+      );
       this.closeModal();
-    }else{
+    } else {
       this.toastService.show(
         'Error: Nombre del evento',
         'Introduce el nombre del evento.',
@@ -73,6 +79,18 @@ export class EventComponent {
         10000
       );
     }
+  }
+
+  deleteEnvironment() {
+    this.environmentService.removeEnvironment(this.environmentObj.id);
+    this.closeModal();
+    this.router.navigate(['/inbox']);
+  }
+
+  deleteEvent(index : number){
+    this.environmentObj.events.splice(index,1);
+    this.environmentObj.colors.splice(index,1);
+    this.environmentService.updateEnvironment(this.environmentObj.id,this.environmentObj);
   }
 
   // Abrir manualmente el modal con su backdrop

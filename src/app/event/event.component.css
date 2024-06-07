@@ -24,7 +24,7 @@ h2 {
 
 .event{
     cursor: pointer;
-    width: fit-content;
+
 }
 
 @media (max-width: 530px) {

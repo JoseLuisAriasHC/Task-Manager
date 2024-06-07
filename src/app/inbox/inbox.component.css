@@ -1,0 +1,39 @@
+.inbox {
+  width: 100%;
+  padding: 5rem 7rem 5rem 7rem;
+}
+.check,
+.check::before,
+.check::after {
+  background-image: url(../../assets/svg/circle-regular.svg);
+  border-radius: 50%;
+  border-color: transparent;
+  border-width: 0px;
+  padding: 0px;
+  width: 1.5rem;
+  height: 1.5rem;
+  opacity: 0.5;
+  transition: background-image 0.2s ease-in-out;
+  margin-right: 0.8rem;
+}
+.check:hover {
+  background-image: url(../../assets/svg/circle-check-solid.svg);
+  opacity: 0.9;
+  box-shadow: 0px 0px 3px 3px rgb(21, 115, 71,0.5);
+}
+.text-time{
+    display: flex;
+    color: #5eb06f;
+    font-weight: 600;
+    font-size: 0.9rem;
+    margin-left: 2.2rem;
+}
+.text-time>fa-icon{
+    margin-left: 0.5rem;
+    color: #6c757d;
+}
+
+.text-event{
+    margin-left: auto;
+    color: rgba(33, 37, 41, 0.75);
+}

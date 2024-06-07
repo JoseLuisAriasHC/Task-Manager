@@ -13,7 +13,7 @@ export class EnvironmentService {
     return this.environmentListSubject.asObservable();
   }
 
-  addEvent(idToUpdate: string, updatedData: Partial<Environment>): void {
+  updateEnvironment(idToUpdate: string, updatedData: Partial<Environment>): void {
     const environments = this.environmentListSubject.value;
     const index = environments.findIndex(env => env.id === idToUpdate);
     if (index !== -1) {

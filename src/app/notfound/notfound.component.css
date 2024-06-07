@@ -1,0 +1,85 @@
+.main {
+    /* background-image: url('../../assets/img/fondo3.png'); */
+    background-size: contain;
+    background-position: right;
+    background-repeat: no-repeat;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    color: black;
+}
+
+.error-container {
+    width: 100%;
+}
+
+.message-error {
+    width: 32rem;
+    margin-left: 5rem;
+}
+
+.number-error {
+    text-align: center;
+    margin-right: 25rem;
+}
+
+.number-error h1 {
+    font-size: 150px;
+}
+
+@media (max-width: 992px) {
+    .number-error {
+        margin: 3rem 0 0 0;
+    }
+}
+
+@media (min-width: 992px) {
+    .number-error {
+        margin: 3rem 0 0 0;
+    }
+    .message-error {
+        width: 32rem;
+    }
+}
+
+@media (min-width: 1200px) {
+    .number-error {
+        margin-right: 8rem;
+    }
+    .message-error {
+        width: 25rem;
+    }
+}
+
+@media (min-width: 1301px) {
+    .number-error {
+        margin-right: 12rem;
+    }
+    .message-error {
+        width: 25rem;
+    }
+}
+
+@media (min-width: 1401px) {
+    .number-error {
+        margin-right: 16rem;
+    }
+    .message-error {
+        width: 27rem;
+    }
+}
+
+@media (min-width: 1673px) {
+    .number-error {
+        margin-right: 18rem;
+    }
+    .message-error {
+        width: 27rem;
+    }
+}
+
+@media (max-width: 576px) {
+    .message-error {
+        margin-left: 2rem;
+    }
+}
