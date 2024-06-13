@@ -17,9 +17,8 @@
                     </button>
                     <button type="button" class="btn-close" aria-label="Close" (click)="closeModal()"></button>
                 </div>
-                <input type="text" [(ngModel)]="environmentObj.name" value="{{environmentObj.name}}"
-                    (keyup.enter)="openModal('eventsModal')" class="form-control fs-4 mb-3 form-title"
-                    placeholder="Nombre del Entorno" #nameEnvironment>
+                <input type="text" [(ngModel)]="environmentObj.name" (keyup.enter)="openModal('eventsModal')"
+                    class="form-control fs-4 mb-3" placeholder="Nombre del Entorno" #nameEnvironment>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" (click)="closeModal()">Cerrar</button>
@@ -46,7 +45,7 @@
                 <div class="d-flex">
                     <input type="color" class="form-control form-control-color me-2" value="#CB3434"
                         ngbTooltip="Color representativo del evento" #colorEvent>
-                    <input type="text" (keyup.enter)="addEvent()" class="form-control me-2"
+                    <input type="text" (keyup.enter)="addEvent()" class="form-control fs-5 me-2"
                         placeholder="Nombre del evento" #nameEvent>
                     <button class="btn btn-success" (click)="addEvent()" placement="end" ngbTooltip="Añadir un evento"
                         triggers="hover">
@@ -70,8 +69,9 @@
 
 <!-- Entornos y etiquetas del usuario -->
 <div class="mt-1">
-    <div *ngFor="let environment of environmentList; let i = index" class="mb-3">
-        <button class="btn btn-info w-100 text-start btn-enviroment" [routerLink]="['/event-list', environment.id]">{{environment.name}}</button>
+    <div *ngFor="let environment of environmentList; let i = index" class="mb-2">
+        <button class="btn btn-info w-100 text-start btn-enviroment"
+            [routerLink]="['/event-list', environment.id]">{{environment.name}}</button>
         <div class="ms-2 px-3 py-0">
             <div *ngFor="let event of environment.events; let indexEve = index" class="my-1">
                 <fa-icon [icon]="faHashtag" class="me-2" [ngStyle]="{'color': environment.colors[indexEve]}"></fa-icon>

@@ -8,10 +8,8 @@ import { NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap'; // Tooltip
 
 import { ModalService } from '../services/modal/modal.service';
 import { AppToastService } from '../services/toast/app-toast.service';
-import {
-  Environment,
-  EnvironmentService,
-} from '../services/environment/environment.service';
+import { EnvironmentService } from '../services/environment/environment.service';
+import { Environment } from '../models/environment.model';
 
 @Component({
   selector: 'app-event',
@@ -45,7 +43,7 @@ export class EventComponent {
     this.paramSubscription = this.route.paramMap.subscribe((paramMap) => {
       const id = paramMap.get('id');
       if (id) {
-        const environment = Environment.getByID(id);
+        const environment = this.environmentService.getByID(id);
         if (environment !== undefined) {
           this.environmentObj = environment;
         } else {
@@ -87,10 +85,13 @@ export class EventComponent {
     this.router.navigate(['/inbox']);
   }
 
-  deleteEvent(index : number){
-    this.environmentObj.events.splice(index,1);
-    this.environmentObj.colors.splice(index,1);
-    this.environmentService.updateEnvironment(this.environmentObj.id,this.environmentObj);
+  deleteEvent(index: number) {
+    this.environmentObj.events.splice(index, 1);
+    this.environmentObj.colors.splice(index, 1);
+    this.environmentService.updateEnvironment(
+      this.environmentObj.id,
+      this.environmentObj
+    );
   }
 
   // Abrir manualmente el modal con su backdrop

@@ -1,11 +1,12 @@
+// Angular
 import { Component, ElementRef, Renderer2, ViewChild } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { FormsModule } from '@angular/forms'; // Para guardar y mostrar los valores de un OBJ en un Form
 import { CommonModule } from '@angular/common'; // Para el if o for en html
 import { RouterLink } from '@angular/router';
-
+// bootstrap
 import { NgbModule, NgbDatepickerModule } from '@ng-bootstrap/ng-bootstrap';
 import { PlacementArray } from '@ng-bootstrap/ng-bootstrap/util/positioning';
-import { v4 as uuidv4 } from 'uuid'; // id único
+// fortawesome
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome'; // iconos fontawesome
 import {
   faSquarePlus,
@@ -14,14 +15,15 @@ import {
   faCircleInfo,
   faArrowLeftLong,
 } from '@fortawesome/free-solid-svg-icons';
-
+// Services
 import { AppToastService } from '../services/toast/app-toast.service'; // Toast
 import { ToastModule } from '../services/toast/toast.module'; // Toast
 import { ModalService } from '../services/modal/modal.service';
-import {
-  EnvironmentService,
-  Environment,
-} from '../services/environment/environment.service';
+import { EnvironmentService } from '../services/environment/environment.service';
+// Models
+import { Environment } from '../models/environment.model';
+// Extra tools
+import { v4 as uuidv4 } from 'uuid'; // id único
 
 @Component({
   selector: 'app-environment-event',

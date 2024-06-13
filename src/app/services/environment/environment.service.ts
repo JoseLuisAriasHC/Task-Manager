@@ -1,21 +1,39 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
+import { Environment } from '../../models/environment.model';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class EnvironmentService {
-  private environmentListSubject: BehaviorSubject<Environment[]> = new BehaviorSubject<Environment[]>(Environment.list());
+  private environmentListSubject: BehaviorSubject<Environment[]> =
+    new BehaviorSubject<Environment[]>(this.list());
 
-  constructor() { }
+  constructor() {}
+
+  list(): Environment[] {
+    const tableEnvironments = localStorage.getItem('tableEnvironments');
+    if (tableEnvironments != null) {
+      return JSON.parse(tableEnvironments);
+    }
+    return [];
+  }
+
+  getByID(id: string): Environment | undefined {
+    const list = this.list();
+    return list.find((env) => env.id === id);
+  }
 
   getList(): Observable<Environment[]> {
     return this.environmentListSubject.asObservable();
   }
 
-  updateEnvironment(idToUpdate: string, updatedData: Partial<Environment>): void {
+  updateEnvironment(
+    idToUpdate: string,
+    updatedData: Partial<Environment>
+  ): void {
     const environments = this.environmentListSubject.value;
-    const index = environments.findIndex(env => env.id === idToUpdate);
+    const index = environments.findIndex((env) => env.id === idToUpdate);
     if (index !== -1) {
       environments[index] = { ...environments[index], ...updatedData };
       localStorage.setItem('tableEnvironments', JSON.stringify(environments));
@@ -34,30 +52,13 @@ export class EnvironmentService {
 
   removeEnvironment(idToRemove: string) {
     const environments = this.environmentListSubject.getValue();
-    const updatedEnvironments = environments.filter(env => env.id !== idToRemove);
+    const updatedEnvironments = environments.filter(
+      (env) => env.id !== idToRemove
+    );
     this.environmentListSubject.next(updatedEnvironments);
-    localStorage.setItem('tableEnvironments', JSON.stringify(updatedEnvironments));
+    localStorage.setItem(
+      'tableEnvironments',
+      JSON.stringify(updatedEnvironments)
+    );
   }
-}
-
-export class Environment {
-  id: string = '';
-  name: string = '';
-  colors: string[] = [];
-  events: string[] = [];
-
-  static list(): Environment[] {
-    const tableEnvironments = localStorage.getItem('tableEnvironments');
-    if (tableEnvironments != null) {
-      return JSON.parse(tableEnvironments);
-    }
-    return [];
-  }
-
-  static getByID(id: string): Environment | undefined {
-    let list: Environment[] = [];
-    list = Environment.list();
-    return list.find((env) => env.id === id);
-  }
-  
 }
