@@ -17,10 +17,7 @@
         <!-- Acciones principales del task manager -->
         <div class="offcanvas-body">
             <div class="mb-3">
-                <button class="btn btn-info w-100 text-start btn-add">
-                    <fa-icon [icon]="faCirclePlus" class="me-2"></fa-icon>
-                    Añadir Tarea
-                </button>
+                <app-task-modal [claseCSS]="claseCSS"></app-task-modal>
                 <button class="btn btn-info w-100 text-start ">
                     <fa-icon [icon]="faMagnifyingGlass" class="me-2"></fa-icon>
                     Buscar

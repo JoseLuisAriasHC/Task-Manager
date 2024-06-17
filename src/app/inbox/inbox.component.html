@@ -16,93 +16,10 @@
                     </div>
                 </div>
                 <hr class="mt-1">
-            </div>
-            <button type="button" class="btn add-task" (click)="openModal('addTaskModal')">
-                <fa-icon [icon]="faCirclePlus"></fa-icon>
-                <span class="text-body-secondary ms-2">Añadir Tarea</span>
-            </button>
-        </div>
-    </div>
-
-    <div class="modal" aria-hidden="false" role="dialog" id="addTaskModal">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content">
-                <div class="modal-body mb-3">
-                    <div class="d-flex mb-2">
-                        <button type="button" class="btn-close ms-auto" aria-label="Close"
-                            (click)="closeModal()"></button>
-                    </div>
-                    <input type="text" class="form-control fs-3 mb-3 description-task" [(ngModel)]="taskObj.description"
-                        placeholder="Descripción de la tarea">
-                    <div class="row g-2">
-                        <div class="col-md-3">
-                            <input type="date" [(ngModel)]="taskObj.date" class="form-control">
-                        </div>
-                        <div class="col-md-2">
-                            <input type="time" [(ngModel)]="taskObj.time" class="form-control">
-                        </div>
-                        <div class="col-md-3">
-                            <select class="form-select" placement="end" [(ngModel)]="taskObj.priority"
-                                ngbTooltip="Del menos importante (0) al más importante (3)" triggers="hover">
-                                <option value="" disabled selected>Prioridad</option>
-                                <option value="0">Prioridad 0</option>
-                                <option value="1">Prioridad 1</option>
-                                <option value="2">Prioridad 2</option>
-                                <option value="3">Prioridad 3</option>
-                            </select>
-                        </div>
-                        <div class="col">
-                            <button class="btn btn-info" (click)="openModal('selectEnvironment')">Seleccionar
-                                Evento</button>
-                        </div>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" (click)="closeModal()">Cerrar</button>
-                    <button type="submit" class="btn btn-primary" (click)="addTask()">Añadir tarea</button>
-                </div>
+                <app-task-modal [claseCSS]="claseCSS"></app-task-modal>
             </div>
         </div>
     </div>
-
-    <div class="modal" aria-hidden="false" role="dialog" id="selectEnvironment">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content">
-                <div class="modal-body mb-3">
-                    <div class="d-flex mb-3">
-                        <button type="button" class="btn-close ms-auto" aria-label="Close"
-                            (click)="backModal()"></button>
-                    </div>
-                    <div class="mb-3">
-                        <h2>Trabajo</h2>
-                        <div class="ms-3">
-                            <button class="btn btn-light">
-                                <fa-icon [icon]="faHashtag" class="me-1"></fa-icon>
-                                Proyectos
-                            </button>
-                            <button class="btn btn-light">
-                                <fa-icon [icon]="faHashtag" class="me-1"></fa-icon>
-                                Proyectos
-                            </button>
-                            <button class="btn btn-light">
-                                <fa-icon [icon]="faHashtag" class="me-1"></fa-icon>
-                                Proyectos
-                            </button>
-                            <button class="btn btn-light">
-                                <fa-icon [icon]="faHashtag" class="me-1"></fa-icon>
-                                Proyectos
-                            </button>
-                        </div>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" (click)="backModal()">
-                        <fa-icon [icon]="faArrowLeftLong"></fa-icon>
-                        Atras
-                    </button>
-                    <button type="submit" class="btn btn-primary" (click)="addTask()">Borrar entorno</button>
-                </div>
-            </div>
-        </div>
-    </div>
+    
+    <app-toast-container></app-toast-container>
 </div>

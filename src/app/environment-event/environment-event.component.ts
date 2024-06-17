@@ -4,7 +4,7 @@ import { FormsModule } from '@angular/forms'; // Para guardar y mostrar los valo
 import { CommonModule } from '@angular/common'; // Para el if o for en html
 import { RouterLink } from '@angular/router';
 // bootstrap
-import { NgbModule, NgbDatepickerModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap'; // Para el Popover
 import { PlacementArray } from '@ng-bootstrap/ng-bootstrap/util/positioning';
 // fortawesome
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome'; // iconos fontawesome
@@ -31,7 +31,6 @@ import { v4 as uuidv4 } from 'uuid'; // id único
   imports: [
     FontAwesomeModule,
     NgbModule,
-    NgbDatepickerModule,
     FormsModule,
     ToastModule,
     CommonModule,
@@ -74,6 +73,10 @@ export class EnvironmentEventComponent {
     this.infoPopoverPlacement = screenWidth < 1024 ? 'end' : 'start';
   }
 
+  trackByEnvironmentId(index: number, environment: Environment): string {
+    return environment.id;
+  }
+  
   // Crear dinamicamente los elementos event
   addEvent() {
     // Obtener el contenedor de eventos y el input value

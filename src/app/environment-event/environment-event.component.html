@@ -69,7 +69,7 @@
 
 <!-- Entornos y etiquetas del usuario -->
 <div class="mt-1">
-    <div *ngFor="let environment of environmentList; let i = index" class="mb-2">
+    <div *ngFor="let environment of environmentList; let i = index trackBy: trackByEnvironmentId" class="mb-2">
         <button class="btn btn-info w-100 text-start btn-enviroment"
             [routerLink]="['/event-list', environment.id]">{{environment.name}}</button>
         <div class="ms-2 px-3 py-0">
