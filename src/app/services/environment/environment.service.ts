@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { Environment } from '../../models/environment.model';
+import { v4 as uuidv4 } from 'uuid'; // id único
 
 @Injectable({
   providedIn: 'root',
@@ -45,6 +46,7 @@ export class EnvironmentService {
 
   addEnvironment(newEnvironment: Environment) {
     const environments = this.environmentListSubject.getValue();
+    newEnvironment.id = uuidv4();
     environments.push(newEnvironment);
     this.environmentListSubject.next(environments);
     localStorage.setItem('tableEnvironments', JSON.stringify(environments));

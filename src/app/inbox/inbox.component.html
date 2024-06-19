@@ -1,25 +1,38 @@
 <div class="inbox">
-    <h2 class="mt-5">Hoy</h2>
-    <div class="environment-container">
-        <h5>Mis proyectos</h5>
-        <hr>
-        <div class="task-list">
-            <div class="task-container">
-                <button type="button" class="btn check" (click)="taskDone($event)"></button>
-                <span class="m-0">Hacer 30 minutos de yoga</span>
-                <div class="text-time">
-                    <p>7:30 am</p>
-                    <fa-icon [icon]="faClock"></fa-icon>
-                    <div class="text-event">
-                        holas
-                        <fa-icon [icon]="faHashtag"></fa-icon>
+    <div *ngFor="let dateGroup of sortedTaskList | keyvalue" class="mt-5">
+        <h2>{{dateGroup.key | dateFormat }}</h2>
+        <div *ngFor="let envGroup of dateGroup.value | keyvalue" class="environment-container">
+            <h5>{{ getEnvironment(envGroup.key)?.name || 'Otras tareas' }}</h5>
+            <hr>
+            <div *ngFor="let task of envGroup.value; let i = index trackBy: trackByTaskId" class="task-list">
+                <div class="row task-container">
+                    <div class="col">
+                        <button type="button" class="btn check" (click)="taskDone($event)"></button>
+                        <span class="m-0">{{task.description}}</span>
+                        <div class="text-time">
+                            <p>{{task.time}}</p>
+                            <fa-icon [icon]="faClock"></fa-icon>
+                            <div *ngIf="getEnvironment(envGroup.key)" class="text-event">
+                                {{task.event}}
+                                <fa-icon [icon]="faHashtag" [ngStyle]="{'color': getColorEvent(getEnvironment(envGroup.key),task.event)}"></fa-icon>
+                            </div>
+                        </div>
                     </div>
+                    <div class="col-auto options-buttons d-flex justify-content-center align-items-center">
+                        <button class="btn btn-outline-light" placement="start"
+                            ngbTooltip="Editar description" triggers="hover">
+                            <fa-icon [icon]="faPenToSquare"></fa-icon>
+                        </button>
+                        <button class="btn btn-outline-light" placement="start"
+                            ngbTooltip="Cambiar Fecha" triggers="hover">
+                            <fa-icon
+                                [icon]="faCalendar"></fa-icon>
+                            </button>
+                    </div>
+                    <hr class="mt-1">
                 </div>
-                <hr class="mt-1">
-                <app-task-modal [claseCSS]="claseCSS"></app-task-modal>
             </div>
         </div>
+        <app-task-modal [claseCSS]="claseCSS" [date]="dateGroup.key"></app-task-modal>
     </div>
-    
-    <app-toast-container></app-toast-container>
 </div>

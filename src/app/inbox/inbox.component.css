@@ -2,9 +2,16 @@
   width: 100%;
   padding: 3rem 7rem 6rem 7rem;
 }
+.inbox>div>h2{
+  color: #2c5f52;
+}
 
 .environment-container{
   margin-top: 2.5rem;
+}
+
+.environment-container>h5{
+  color: #101916;
 }
 
 .task-container {
@@ -54,5 +61,27 @@
 
 .text-event {
   margin-left: auto;
-  color: rgba(33, 37, 41, 0.75);
+  color: rgba(33, 37, 41);
+}
+
+.task-container:hover .text-event{
+  display: none;
+}
+
+.options-buttons{
+  display: none !important;
+}
+
+.task-container:hover .options-buttons{
+  display: flex !important;
+}
+
+.btn-outline-light{
+  color: #6c757d;
+  border: transparent;
+  font-size: large;
+}
+
+.btn-outline-light:hover{
+  color: #000;
 }

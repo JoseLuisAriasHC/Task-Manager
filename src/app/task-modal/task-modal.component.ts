@@ -8,19 +8,21 @@ import {
   faCirclePlus,
   faArrowLeftLong,
 } from '@fortawesome/free-solid-svg-icons';
+// ng-bootstrap
+import { NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
 // Services
 import { ModalService } from '../services/modal/modal.service';
 import { AppToastService } from '../services/toast/app-toast.service';
 import { EnvironmentService } from '../services/environment/environment.service';
+import { TaskService } from '../services/task/task.service';
 // Modesl
 import { Task } from '../models/task.model';
 import { Environment } from '../models/environment.model';
 
-
 @Component({
   selector: 'app-task-modal',
   standalone: true,
-  imports: [FormsModule, FontAwesomeModule, CommonModule],
+  imports: [FormsModule, FontAwesomeModule, CommonModule, NgbTooltipModule],
   templateUrl: './task-modal.component.html',
   styleUrl: './task-modal.component.css',
 })
@@ -30,6 +32,7 @@ export class TaskModalComponent {
   faArrowLeftLong = faArrowLeftLong;
 
   @Input() claseCSS: string | undefined;
+  @Input() date: string | undefined;
 
   @ViewChild('dateInput') dateInput: ElementRef | undefined;
 
@@ -41,7 +44,8 @@ export class TaskModalComponent {
     private el: ElementRef,
     private modalService: ModalService,
     private toastService: AppToastService,
-    private environmentService: EnvironmentService
+    private environmentService: EnvironmentService,
+    private taskService: TaskService
   ) {}
 
   ngOnInit(): void {
@@ -54,8 +58,8 @@ export class TaskModalComponent {
     let day = String(today.getDate()).padStart(2, '0');
     let month = String(today.getMonth() + 1).padStart(2, '0'); // Los meses comienzan en 0
     let year = today.getFullYear();
-
     this.today = `${year}-${month}-${day}`;
+    // asignar fecha
   }
 
   // Para que Angular trabaje mejor en los bucles dinamicos
@@ -76,10 +80,11 @@ export class TaskModalComponent {
     ) {
       let errorMessage = this.TaskErrorHandler();
       if (errorMessage == '') {
+        this.taskService.addTask(this.taskObj);
+        this.closeModal();
       } else {
         this.toastService.show('Error al añadir tarea', errorMessage);
       }
-      console.log(this.taskObj);
     } else {
       this.toastService.show(
         'Error al añadir tarea',
@@ -147,14 +152,16 @@ export class TaskModalComponent {
 
   // Abrir manualmente el modal con su backdrop
   openModal(idModal: string) {
+    if (this.date) {
+      this.taskObj.date = this.date;
+    }
     this.modalService.openModal(this.el, idModal);
   }
 
   // Cerrar manualmante el modal y resetear valores
   closeModal() {
     this.modalService.closeModal(this.el);
-    // this.eventInput.nativeElement.value = '';
-    console.log(this.taskObj);
+    this.taskObj = new Task();
   }
 
   backModal() {

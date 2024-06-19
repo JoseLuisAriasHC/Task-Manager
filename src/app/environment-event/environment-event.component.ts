@@ -22,8 +22,6 @@ import { ModalService } from '../services/modal/modal.service';
 import { EnvironmentService } from '../services/environment/environment.service';
 // Models
 import { Environment } from '../models/environment.model';
-// Extra tools
-import { v4 as uuidv4 } from 'uuid'; // id único
 
 @Component({
   selector: 'app-environment-event',
@@ -158,7 +156,6 @@ export class EnvironmentEventComponent {
       this.environmentObj.events.length > 0
     ) {
       // Guardar el nombre del Environment en el Obj
-      this.environmentObj.id = uuidv4();
       this.environmentService.addEnvironment(this.environmentObj);
       this.closeModal();
     } else {

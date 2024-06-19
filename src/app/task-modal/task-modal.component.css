@@ -33,6 +33,7 @@
   justify-content: start;
   align-items: center;
   width: 100%;
+  border: transparent;
 }
 
 .add-task-main fa-icon {
@@ -48,7 +49,6 @@
 .add-task-main:active,
 .add-task-main:hover {
   background-color: #648374;
-  border: transparent;
 }
 
 .add-task-main:active span,
