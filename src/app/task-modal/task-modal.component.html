@@ -14,10 +14,10 @@
                     placeholder="Descripción de la tarea" (keyup.enter)="focusDateInput()">
                 <div class="row g-2">
                     <div class="col-md-3">
-                        <input type="date" [(ngModel)]="taskObj.date" class="form-control" [min]="today" #dateInput>
+                        <input type="date" [(ngModel)]="taskObj.date" class="form-control" [min]="minDate" #dateInput>
                     </div>
                     <div class="col-md-2">
-                        <input type="time" [(ngModel)]="taskObj.time" class="form-control">
+                        <input type="time" [(ngModel)]="taskObj.time" class="form-control" (change)="onTimeChange()">
                     </div>
                     <div class="col-md-3">
                         <select class="form-select" [(ngModel)]="taskObj.priority" placement="end" 
@@ -73,3 +73,6 @@
         </div>
     </div>
 </div>
+
+<app-toast-container></app-toast-container>
+

@@ -15,7 +15,7 @@
 }
 
 .task-container {
-  transition: opacity 0.7s ease-in-out;
+  transition: opacity 0.25s ease;
 }
 
 .check {
@@ -26,7 +26,7 @@
   padding: 0px;
   width: 1.5rem;
   height: 1.5rem;
-  opacity: 0.5;
+  opacity: 0.4;
   transition: background-image 0.2s ease-in-out;
   margin-right: 0.8rem;
 }
@@ -43,8 +43,68 @@
   box-shadow: 0px 0px 3px 3px rgb(21, 115, 71, 0.5);
 }
 
-.task-done {
-  opacity: 0;
+.priority3.check {
+  background-image: url(../../assets/svg/circle-regular-red.svg);
+}
+
+.priority3.check:hover {
+  background-image: url(../../assets/svg/circle-check-solid-red.svg);
+  opacity: 0.9;
+  box-shadow: 0px 0px 3px 3px rgba(255, 0, 0, 0.5); /* Red */
+}
+
+.priority3.check.active {
+  background-image: url(../../assets/svg/circle-check-solid.svg);
+  opacity: 0.9;
+  box-shadow: 0px 0px 3px 3px rgba(255, 0, 0, 0.5); /* Red */
+}
+
+.priority2.check {
+  background-image: url(../../assets/svg/circle-regular-organge.svg);
+}
+
+.priority2.check:hover {
+  background-image: url(../../assets/svg/circle-check-solid-orange.svg);
+  opacity: 0.9;
+  box-shadow: 0px 0px 3px 3px rgba(255, 165, 0, 0.5); /* Orange */
+}
+
+.priority2.check.active {
+  background-image: url(../../assets/svg/circle-check-solid-orange.svg);
+  opacity: 0.9;
+  box-shadow: 0px 0px 3px 3px rgba(255, 165, 0, 0.5); /* Orange */
+}
+
+.priority1.check {
+  background-image: url(../../assets/svg/circle-regular-blue.svg);
+}
+
+.priority1.check:hover {
+  background-image: url(../../assets/svg/circle-check-solid-blue.svg);
+  opacity: 0.9;
+  box-shadow: 0px 0px 3px 3px rgb(13, 110, 253, 0.5); /* Blue */
+}
+
+.priority1.check.active {
+  background-image: url(../../assets/svg/circle-check-solid-blue.svg);
+  opacity: 0.9;
+  box-shadow: 0px 0px 3px 3px rgb(13, 110, 253, 0.5); /* Blue */
+}
+
+.priority0.check {
+  background-image: url(../../assets/svg/circle-regular.svg);
+}
+
+.priority0.check:hover {
+  background-image: url(../../assets/svg/circle-check-solid.svg);
+  opacity: 0.9;
+  box-shadow: 0px 0px 3px 3px rgba(0, 128, 0, 0.5); /* Green */
+}
+
+.priority0.check.active {
+  background-image: url(../../assets/svg/circle-check-solid.svg);
+  opacity: 0.9;
+  box-shadow: 0px 0px 3px 3px rgba(0, 128, 0, 0.5); /* Green */
 }
 
 .text-time {
@@ -84,4 +144,18 @@
 
 .btn-outline-light:hover{
   color: #000;
+}
+
+.btn-outline-light>input[type=date]{
+  width: 22px;
+  border: transparent;
+  padding: 0px;
+  margin: 0px;
+}
+
+.btn-outline-light>input[type=time]{
+  width: 30px;
+  border: transparent;
+  padding: 0px;
+  margin: 0px;
 }

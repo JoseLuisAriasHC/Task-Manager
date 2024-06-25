@@ -10,11 +10,12 @@
     width: 300px;
     background-color: #fff;
     margin-bottom: 10px;
+    border: transparent;
+    box-shadow: 0 0.3rem 0.7rem rgba(0, 0, 0, 0.15);
   }
   
   .toast-header {
     padding: 8px;
-    
     border-radius: 4px 4px 0 0;
   }
   

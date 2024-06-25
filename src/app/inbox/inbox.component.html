@@ -7,32 +7,60 @@
             <div *ngFor="let task of envGroup.value; let i = index trackBy: trackByTaskId" class="task-list">
                 <div class="row task-container">
                     <div class="col">
-                        <button type="button" class="btn check" (click)="taskDone($event)"></button>
+                        <button type="button" class="btn check" [ngClass]="getPriorityClass(task)"
+                            (click)="taskDone($event, task)"></button>
                         <span class="m-0">{{task.description}}</span>
-                        <div class="text-time">
-                            <p>{{task.time}}</p>
-                            <fa-icon [icon]="faClock"></fa-icon>
+                        <div class="d-flex">
+                            <div class="text-time">
+                                <p class="mb-1">{{task.time || 'Sin hora'}}</p>
+                                <fa-icon [icon]="faClock"></fa-icon>
+                            </div>
                             <div *ngIf="getEnvironment(envGroup.key)" class="text-event">
                                 {{task.event}}
-                                <fa-icon [icon]="faHashtag" [ngStyle]="{'color': getColorEvent(getEnvironment(envGroup.key),task.event)}"></fa-icon>
+                                <fa-icon [icon]="faHashtag"
+                                    [ngStyle]="{'color': getColorEvent(getEnvironment(envGroup.key),task.event)}"></fa-icon>
                             </div>
+
                         </div>
                     </div>
                     <div class="col-auto options-buttons d-flex justify-content-center align-items-center">
-                        <button class="btn btn-outline-light" placement="start"
-                            ngbTooltip="Editar description" triggers="hover">
+                        <button class="btn btn-outline-light" (click)="openModal('taskDescription',task)"
+                            placement="start" ngbTooltip="Editar description" triggers="hover">
                             <fa-icon [icon]="faPenToSquare"></fa-icon>
                         </button>
-                        <button class="btn btn-outline-light" placement="start"
-                            ngbTooltip="Cambiar Fecha" triggers="hover">
-                            <fa-icon
-                                [icon]="faCalendar"></fa-icon>
-                            </button>
+                        <button class="btn btn-outline-light" placement="start" ngbTooltip="Cambiar fecha"
+                            triggers="hover" >
+                            <input type="date" [min]="minDate" (change)="onDateChange($event,task)">
+                        </button>
+                        <button class="btn btn-outline-light" placement="start" ngbTooltip="Cambiar hora"
+                            triggers="hover" >
+                            <input type="time" [min]="minTime" (change)="onTimeChange($event,task)">
+                        </button>
                     </div>
                     <hr class="mt-1">
                 </div>
             </div>
+            <app-task-modal [claseCSS]="claseCSS" [date]="dateGroup.key"></app-task-modal>
         </div>
-        <app-task-modal [claseCSS]="claseCSS" [date]="dateGroup.key"></app-task-modal>
+    </div>
+
+    <div class="modal" aria-hidden="false" role="dialog" id="taskDescription">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-body mb-3">
+                    <div class="d-flex mb-3">
+                        <button type="button" class="btn-close ms-auto" aria-label="Close"
+                            (click)="closeModal()"></button>
+                    </div>
+                    <input type="text" (keyup.enter)="changeTaskDescription()" class="form-control fs-4 form-title"
+                        placeholder="Descripción de la Tarea" #description>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" (click)="closeModal()">Cerrar</button>
+                    <button type="submit" class="btn btn-primary" (click)="changeTaskDescription()">Cambiar
+                        descripción</button>
+                </div>
+            </div>
+        </div>
     </div>
 </div>

@@ -15,6 +15,8 @@ import { ModalService } from '../services/modal/modal.service';
 import { AppToastService } from '../services/toast/app-toast.service';
 import { EnvironmentService } from '../services/environment/environment.service';
 import { TaskService } from '../services/task/task.service';
+import { ToastModule } from '../services/toast/toast.module';
+import { UtilsService } from '../services/utils/utils.service';
 // Modesl
 import { Task } from '../models/task.model';
 import { Environment } from '../models/environment.model';
@@ -22,7 +24,13 @@ import { Environment } from '../models/environment.model';
 @Component({
   selector: 'app-task-modal',
   standalone: true,
-  imports: [FormsModule, FontAwesomeModule, CommonModule, NgbTooltipModule],
+  imports: [
+    FormsModule,
+    FontAwesomeModule,
+    CommonModule,
+    NgbTooltipModule,
+    ToastModule,
+  ],
   templateUrl: './task-modal.component.html',
   styleUrl: './task-modal.component.css',
 })
@@ -38,14 +46,16 @@ export class TaskModalComponent {
 
   taskObj: Task = new Task();
   environmentList: Environment[] = [];
-  today: string | undefined;
+  minDate: string | undefined;
+  minTime: string | undefined;
 
   constructor(
     private el: ElementRef,
     private modalService: ModalService,
     private toastService: AppToastService,
     private environmentService: EnvironmentService,
-    private taskService: TaskService
+    private taskService: TaskService,
+    private utilsService: UtilsService
   ) {}
 
   ngOnInit(): void {
@@ -54,12 +64,9 @@ export class TaskModalComponent {
       .getList()
       .subscribe((environments) => (this.environmentList = environments));
     // obtener la fecha de hoy
-    let today = new Date();
-    let day = String(today.getDate()).padStart(2, '0');
-    let month = String(today.getMonth() + 1).padStart(2, '0'); // Los meses comienzan en 0
-    let year = today.getFullYear();
-    this.today = `${year}-${month}-${day}`;
-    // asignar fecha
+    this.minDate = this.utilsService.getTodaysDate();
+    // Obtener la hora actual
+    this.minTime = this.utilsService.getCurrentTime();
   }
 
   // Para que Angular trabaje mejor en los bucles dinamicos
@@ -78,12 +85,12 @@ export class TaskModalComponent {
       this.taskObj.description.trim() != '' &&
       this.taskObj.date.trim() != ''
     ) {
-      let errorMessage = this.TaskErrorHandler();
-      if (errorMessage == '') {
+      let data = this.TaskErrorHandler();
+      if (!data['error']) {
         this.taskService.addTask(this.taskObj);
         this.closeModal();
       } else {
-        this.toastService.show('Error al añadir tarea', errorMessage);
+        this.toastService.show('Error al añadir tarea', data['message']);
       }
     } else {
       this.toastService.show(
@@ -93,60 +100,41 @@ export class TaskModalComponent {
     }
   }
 
-  TaskErrorHandler(): string {
-    let error = this.isDateValid();
-    if (error != '') {
-      return error;
-    }
-    if (this.taskObj.time) {
-      error = this.isTimeValid();
-      if (error != '') {
-        return error;
-      }
+  TaskErrorHandler() {
+    let data = { error: false, message: '' };
+
+    if (!this.utilsService.isDateValid(this.taskObj.date)) {
+      return { error: true, message: 'La fecha no es válida. Debe estar en el formato YYYY-MM-DD.' };
     }
 
-    if (this.taskObj.priority) {
-      if (this.taskObj.priority < 0 || this.taskObj.priority > 3) {
-        return 'La prioridad solo puede ser un valor entre el 0 y el 3.';
-      }
+    if (this.taskObj.time && !this.utilsService.isTimeValid(this.taskObj.time)) {
+      return { error: true, message: 'La hora no es válida. Debe estar en el formato HH:MM.' };
     }
 
-    return error;
-  }
-
-  isDateValid(): string {
-    let dateString = this.taskObj.date;
-    let dateRegex = /^\d{4}-\d{2}-\d{2}$/;
-
-    if (!dateRegex.test(dateString)) {
-      return 'La fecha no es válida. Debe estar en el formato YYYY-MM-DD.';
+    if (this.taskObj.priority && (this.taskObj.priority < 0 || this.taskObj.priority > 3)) {
+      return { error: true, message: 'La prioridad solo puede ser un valor entre el 0 y el 3.' };
     }
 
-    let date = new Date(dateString);
-    let [year, month, day] = dateString.split('-').map(Number);
-
-    if (
-      date.getFullYear() === year &&
-      date.getMonth() + 1 === month &&
-      date.getDate() === day
-    ) {
-      return '';
-    } else {
-      return 'Debes introducir una fecha válida';
-    }
-  }
-
-  isTimeValid(): string {
-    let timeRegex = /^([01]\d|2[0-3]):([0-5]\d)$/;
-
-    return timeRegex.test(this.taskObj.time)
-      ? ''
-      : 'La hora no es válida. Debe estar en el formato HH:MM.';
+    return data;
   }
 
   focusDateInput() {
     if (this.dateInput) {
       this.dateInput.nativeElement.focus();
+    }
+  }
+
+  onTimeChange() {
+    if (
+      this.minTime &&
+      this.taskObj.date == this.minDate &&
+      this.taskObj.time < this.minTime
+    ) {
+      this.toastService.show(
+        'Error en la Hora',
+        'No puede seleccionar un tiempo anterior al actual.'
+      );
+      this.taskObj.time = '';
     }
   }
 

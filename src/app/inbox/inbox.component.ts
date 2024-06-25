@@ -1,25 +1,39 @@
-import { Component, Renderer2 } from '@angular/core';
+import { Component, ElementRef, Renderer2, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common'; // Para el if, for y style en html
+import { ActivatedRoute } from '@angular/router';
 // fortawesome
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome'; // iconos fontawesome
-import { faClock, faPenToSquare, faCalendar} from '@fortawesome/free-regular-svg-icons';
+import {
+  faClock,
+  faPenToSquare,
+  faCalendar,
+} from '@fortawesome/free-regular-svg-icons';
 import { faHashtag } from '@fortawesome/free-solid-svg-icons';
 // ng-bootstrap
 import { NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
 // Models
 import { TaskModalComponent } from '../task-modal/task-modal.component';
 import { Task } from '../models/task.model';
+import { Environment } from '../models/environment.model';
 // Services
 import { TaskService, OrganizedTasks } from '../services/task/task.service';
-// Pipes
-import { DateFormatPipe } from '../pipes/dateFormat/date-format.pipe';
+import { ModalService } from '../services/modal/modal.service';
+import { UtilsService } from '../services/utils/utils.service';
 import { EnvironmentService } from '../services/environment/environment.service';
-import { Environment } from '../models/environment.model';
+import { DateFormatPipe } from '../pipes/dateFormat/date-format.pipe';
+// Pipes
+import { AppToastService } from '../services/toast/app-toast.service';
 
 @Component({
   selector: 'app-inbox',
   standalone: true,
-  imports: [FontAwesomeModule, CommonModule, TaskModalComponent ,DateFormatPipe,NgbTooltipModule],
+  imports: [
+    FontAwesomeModule,
+    CommonModule,
+    TaskModalComponent,
+    DateFormatPipe,
+    NgbTooltipModule,
+  ],
   templateUrl: './inbox.component.html',
   styleUrl: './inbox.component.css',
 })
@@ -30,16 +44,41 @@ export class InboxComponent {
   faCalendar = faCalendar;
   claseCSS = 'add-task-main';
 
+  @ViewChild('description') descriptionInput: ElementRef | undefined;
+
   taskList: Task[] = [];
   sortedTaskList: OrganizedTasks = {};
-  constructor(private renderer: Renderer2, private taskService: TaskService, private environmentService: EnvironmentService) {}
+  updateTask = new Task();
+  description: string | null = null;
+  minDate: string | undefined;
+  minTime: string | undefined;
+
+  constructor(
+    private renderer: Renderer2,
+    private taskService: TaskService,
+    private environmentService: EnvironmentService,
+    private el: ElementRef,
+    private modalService: ModalService,
+    private utilsService: UtilsService,
+    private toastService: AppToastService,
+    private route: ActivatedRoute
+  ) {}
 
   ngOnInit(): void {
     // Obtener la listas de Task
-    this.taskService.getList().subscribe((tasks) => {
-      this.taskList = tasks;
-      this.sortedTaskList = this.taskService.organizeTasksByDateAndEnvironment(this.taskList);
+    this.route.paramMap.subscribe((params) => {
+      this.description = params.get('description') || '';
+      this.taskService.getList().subscribe((tasks) => {
+        if (this.description) {
+          this.sortedTaskList = this.taskService.getTaskListByDescription(tasks, this.description);
+        } else {
+          this.sortedTaskList = this.taskService.getTaskListSorted(tasks);
+        }
+      });
     });
+
+    this.minDate = this.utilsService.getTodaysDate();
+    this.minTime = this.utilsService.getCurrentTime();
   }
 
   trackByTaskId(index: number, task: Task): string {
@@ -47,28 +86,94 @@ export class InboxComponent {
   }
 
   // Elimiar una Tarea
-  taskDone(event: Event) {
+  taskDone(event: Event, task: Task) {
     let button = event.target as HTMLElement;
     this.renderer.addClass(button, 'active');
     let taskContainer = button.parentElement;
-    this.renderer.setStyle(taskContainer, 'opacity', 0);
+    if (taskContainer) {
+      this.renderer.setStyle(taskContainer, 'opacity', 0);
+    }
 
     setTimeout(() => {
       if (taskContainer) {
         this.renderer.removeChild(taskContainer.parentNode, taskContainer);
+        this.taskService.removeTask(task.id);
       }
-    }, 600);
+    }, 300);
   }
 
-  getEnvironment(id: string){
+  getEnvironment(id: string) {
     return this.environmentService.getByID(id);
   }
 
-  getColorEvent(environment: Environment | undefined, nameEvent: string){
+  getColorEvent(environment: Environment | undefined, nameEvent: string) {
     if (environment) {
       let index = environment.events.indexOf(nameEvent);
       return environment.colors[index];
     }
     return '';
+  }
+
+  getPriorityClass(task: Task) {
+    return `priority${task.priority}`;
+  }
+
+  changeTaskDescription() {
+    if (this.descriptionInput) {
+      this.updateTask.description = this.descriptionInput.nativeElement.value;
+      this, this.taskService.updateTask(this.updateTask.id, this.updateTask);
+      this.closeModal();
+    } else {
+      console.error('No se encuentra el descriptionInput en el DOM');
+    }
+  }
+
+  onDateChange(event: Event, task: Task) {
+    this.minDate = this.utilsService.getTodaysDate();
+    let inputDate = event.target as HTMLInputElement;
+    let date = inputDate.value;
+    task.date = date;
+    this.taskService.updateTask(task.id, task);
+  }
+
+  onTimeChange(event: Event, task: Task) {
+    this.minTime = this.utilsService.getCurrentTime();
+    let inputTime = event.target as HTMLInputElement;
+    let time = inputTime.value;
+    if (this.minTime) {
+      if (task.date == this.minDate) {
+        if (time > this.minTime) {
+          task.time = time;
+          this.taskService.updateTask(task.id, task);
+        } else {
+          this.toastService.show(
+            'Error al cambiar la hora',
+            'No puede seleccionar un tiempo anterior al actual.'
+          );
+        }
+      } else {
+        task.time = time;
+        this.taskService.updateTask(task.id, task);
+      }
+    } else {
+      console.error('No se ha definido un tiempo mínimo.');
+    }
+  }
+
+  // Abrir manualmente el modal con su backdrop
+  openModal(idModal: string, task: Task) {
+    this.modalService.openModal(this.el, idModal);
+    if (this.descriptionInput) {
+      this.updateTask = task;
+      this.descriptionInput.nativeElement.value = this.updateTask.description;
+    } else {
+      console.error('No se encuentra el descriptionInput en el DOM');
+    }
+  }
+
+  // Cerrar manualmante el modal y resetear valores
+  closeModal() {
+    this.modalService.closeModal(this.el);
+    this.updateTask = new Task();
   }
 }
