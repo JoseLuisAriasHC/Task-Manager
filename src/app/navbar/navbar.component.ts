@@ -1,4 +1,6 @@
 import { Component, ElementRef } from '@angular/core';
+import { Router, RouterLink } from '@angular/router';
+// FontAwesome
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import {
   faMagnifyingGlass,
@@ -7,10 +9,12 @@ import {
   faCalendarDays,
   faCalendarCheck,
 } from '@fortawesome/free-solid-svg-icons';
-import { EnvironmentEventComponent } from '../environment-event/environment-event.component';
-import { Router, RouterLink } from '@angular/router';
-import { ModalService } from '../services/modal/modal.service';
+// Component
 import { TaskModalComponent } from '../task-modal/task-modal.component';
+import { EnvironmentEventComponent } from '../environment-event/environment-event.component';
+// Services
+import { ModalService } from '../services/modal/modal.service';
+import { UtilsService } from '../services/utils/utils.service';
 
 @Component({
   selector: 'app-navbar',
@@ -32,15 +36,21 @@ export class NavbarComponent {
   faCalendarCheck = faCalendarCheck;
 
   claseCSS = 'btn-info w-100 text-start btn-add';
+  today: string | undefined;
 
-  constructor(private el: ElementRef, private modalService: ModalService,private router: Router) {}
+  constructor(private el: ElementRef, private modalService: ModalService,private router: Router, private utilsService: UtilsService) {}
+
+  ngOnInit(): void {
+    this.today = this.utilsService.getTodaysDate();
+  }
+
 
   searchTask(event: Event) {
     const inputElement = event.target as HTMLInputElement;
     const description = inputElement.value.trim();
 
     if (description) {
-      this.router.navigate(['/inbox', description]);
+      this.router.navigate(['/inbox', 'description_' + description]);
     }
   }
 

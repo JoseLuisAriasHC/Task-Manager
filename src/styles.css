@@ -34,4 +34,33 @@ body{
         padding-top: 7rem;
     }
 }
+/* Full calendar */
+
+.fc-toolbar-title{
+    font-family: "Noto Serif", serif !important;
+    color: #2c5f52;
+}
+
+.fc-scrollgrid-sync-inner>a{
+    color: #5eb06f;
+    text-decoration: none;
+}
+
+.fc-daygrid-day-top>a{
+    text-decoration: none;
+    color: #101916;
+}
+
+.fc .fc-button-primary{
+    background-color: #648374 !important;
+    border-color: transparent !important;
+    color: #E3E5D8;
+    margin: 0.2rem;
+}
+
+.fc-h-event{
+    background-color: #648374;
+    border: none;
+    color: #E3E5D8;
+}
 

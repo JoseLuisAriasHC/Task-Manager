@@ -1,20 +1,24 @@
 import { Component, ElementRef, ViewChild } from '@angular/core';
+import { RouterLink } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router'; // Para leer el id de la Url
+import { CommonModule } from '@angular/common'; // Para el if o for en html
+// fortawesome
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { faHashtag, faPlus, faTrash } from '@fortawesome/free-solid-svg-icons';
-import { ActivatedRoute, Router } from '@angular/router'; // Para leer el id de la Url
-import { Subscription } from 'rxjs'; // Para detectar cambios en la Url
-import { CommonModule } from '@angular/common'; // Para el if o for en html
+// bootstrap
 import { NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap'; // Tooltip
-
+// Services
 import { ModalService } from '../services/modal/modal.service';
 import { AppToastService } from '../services/toast/app-toast.service';
 import { EnvironmentService } from '../services/environment/environment.service';
+import { TaskService } from '../services/task/task.service';
+// Models
 import { Environment } from '../models/environment.model';
 
 @Component({
   selector: 'app-event',
   standalone: true,
-  imports: [FontAwesomeModule, CommonModule, NgbTooltipModule],
+  imports: [FontAwesomeModule, CommonModule, NgbTooltipModule,RouterLink],
   templateUrl: './event.component.html',
   styleUrl: './event.component.css',
 })
@@ -27,7 +31,7 @@ export class EventComponent {
   @ViewChild('colorEvent') colorInput!: ElementRef;
 
   environmentObj: Environment = new Environment();
-  paramSubscription: Subscription | undefined;
+  index = -1;
 
   constructor(
     private el: ElementRef,
@@ -35,12 +39,13 @@ export class EventComponent {
     private router: Router,
     private modalService: ModalService,
     private toastService: AppToastService,
-    private environmentService: EnvironmentService
+    private environmentService: EnvironmentService,
+    private taskService: TaskService
   ) {}
 
   ngOnInit(): void {
     // Leer la url para poder cambiar el Environment
-    this.paramSubscription = this.route.paramMap.subscribe((paramMap) => {
+    this.route.paramMap.subscribe((paramMap) => {
       const id = paramMap.get('id');
       if (id) {
         const environment = this.environmentService.getByID(id);
@@ -51,12 +56,6 @@ export class EventComponent {
         }
       }
     });
-  }
-
-  ngOnDestroy(): void {
-    if (this.paramSubscription) {
-      this.paramSubscription.unsubscribe();
-    }
   }
 
   addEvent() {
@@ -79,24 +78,60 @@ export class EventComponent {
     }
   }
 
+  handleDelete() {
+    this.index === -1 ? this.deleteEnvironment() : this.deleteEvent();
+  }
+  
+  handleDeleteWithTask() {
+    this.index === -1 ? this.deleteEnvironmentTask() : this.deleteEventTask();
+  }
+  
   deleteEnvironment() {
+    this.removeEnvironmentAndNavigate();
+    this.taskService.updateTasksEnvironment(this.environmentObj.id);
+  }
+  
+  deleteEnvironmentTask() {
+    this.removeEnvironmentAndNavigate();
+    this.taskService.removeTasksByEnvironment(this.environmentObj.id);
+  }
+  
+  deleteEvent() {
+    this.updateEnvironmentEvent();
+    this.taskService.updateTasksEnvironmentByEvent(
+      this.environmentObj.id,
+      this.environmentObj.events[this.index]
+    );
+  }
+  
+  deleteEventTask() {
+    this.updateEnvironmentEvent();
+    this.taskService.removeTasksByEnvironmentAndEvent(
+      this.environmentObj.id,
+      this.environmentObj.events[this.index]
+    );
+  }
+  
+  removeEnvironmentAndNavigate() {
     this.environmentService.removeEnvironment(this.environmentObj.id);
     this.closeModal();
     this.router.navigate(['/inbox']);
   }
-
-  deleteEvent(index: number) {
-    this.environmentObj.events.splice(index, 1);
-    this.environmentObj.colors.splice(index, 1);
+  
+  updateEnvironmentEvent() {
+    this.environmentObj.events.splice(this.index, 1);
+    this.environmentObj.colors.splice(this.index, 1);
     this.environmentService.updateEnvironment(
       this.environmentObj.id,
       this.environmentObj
     );
+    this.closeModal();
   }
 
   // Abrir manualmente el modal con su backdrop
-  openModal(idModal: string) {
+  openModal(idModal: string, index: number = -1) {
     this.modalService.openModal(this.el, idModal);
+    this.index = index;
   }
 
   // Cerrar manualmante el modal y resetear valores

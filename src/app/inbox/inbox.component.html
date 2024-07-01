@@ -1,4 +1,4 @@
-<div class="inbox">
+<div *ngIf="hasTasks()" class="inbox">
     <div *ngFor="let dateGroup of sortedTaskList | keyvalue" class="mt-5">
         <h2>{{dateGroup.key | dateFormat }}</h2>
         <div *ngFor="let envGroup of dateGroup.value | keyvalue" class="environment-container">
@@ -20,7 +20,6 @@
                                 <fa-icon [icon]="faHashtag"
                                     [ngStyle]="{'color': getColorEvent(getEnvironment(envGroup.key),task.event)}"></fa-icon>
                             </div>
-
                         </div>
                     </div>
                     <div class="col-auto options-buttons d-flex justify-content-center align-items-center">
@@ -29,11 +28,11 @@
                             <fa-icon [icon]="faPenToSquare"></fa-icon>
                         </button>
                         <button class="btn btn-outline-light" placement="start" ngbTooltip="Cambiar fecha"
-                            triggers="hover" >
+                            triggers="hover">
                             <input type="date" [min]="minDate" (change)="onDateChange($event,task)">
                         </button>
                         <button class="btn btn-outline-light" placement="start" ngbTooltip="Cambiar hora"
-                            triggers="hover" >
+                            triggers="hover">
                             <input type="time" [min]="minTime" (change)="onTimeChange($event,task)">
                         </button>
                     </div>
@@ -63,4 +62,21 @@
             </div>
         </div>
     </div>
+</div>
+
+<div *ngIf="!hasTasks()" class="notFoundPage">
+    <div class="message-error">
+        <h1>¡Qué suerte!</h1>
+        <h3 *ngIf="data[0] === 'date'">No hay ninguna tarea para esta fecha.</h3>
+        <h3 *ngIf="data[0] === 'event'">No hay ninguna tarea con el evento asignado.</h3>
+        <h3 *ngIf="data[0] === 'description'">No hay ninguna tarea con esta descripción.</h3>
+        <h3 *ngIf="data[0] === ''">Se han completado todas las tareas de hoy.</h3>
+        <p>Parece que hoy se han completado todas las tareas. Si quieres añadir otra tarea, pulsa el siguiente botón de
+            abajo.</p>
+        <button class="btn btn-primary">Añadir tarea</button>
+        <div class="task-modal-container">
+            <app-task-modal [claseCSS]="claseCSS"></app-task-modal>
+        </div>
+    </div>
+    <div class="background"></div>
 </div>

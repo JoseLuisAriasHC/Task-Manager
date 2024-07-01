@@ -13,7 +13,7 @@ export interface ToastInfo {
 export class AppToastService {
   toasts: ToastInfo[] = [];
 
-  show(header: string, body: string, type: 'error' | 'success' = 'error', delay: number = 8000) {
+  show(header: string, body: string, type: 'error' | 'success' = 'error', delay: number = 6000) {
     const toast: ToastInfo = { header, body, type, delay };
     this.toasts.push(toast);
     setTimeout(() => {

@@ -2,15 +2,15 @@
   width: 100%;
   padding: 3rem 7rem 6rem 7rem;
 }
-.inbox>div>h2{
+.inbox > div > h2 {
   color: #2c5f52;
 }
 
-.environment-container{
+.environment-container {
   margin-top: 2.5rem;
 }
 
-.environment-container>h5{
+.environment-container > h5 {
   color: #101916;
 }
 
@@ -124,38 +124,100 @@
   color: rgba(33, 37, 41);
 }
 
-.task-container:hover .text-event{
+.task-container:hover .text-event {
   display: none;
 }
 
-.options-buttons{
+.options-buttons {
   display: none !important;
 }
 
-.task-container:hover .options-buttons{
+.task-container:hover .options-buttons {
   display: flex !important;
 }
 
-.btn-outline-light{
+.btn-outline-light {
   color: #6c757d;
   border: transparent;
   font-size: large;
 }
 
-.btn-outline-light:hover{
+.btn-outline-light:hover {
   color: #000;
 }
 
-.btn-outline-light>input[type=date]{
+.btn-outline-light > input[type="date"] {
   width: 22px;
   border: transparent;
   padding: 0px;
   margin: 0px;
 }
 
-.btn-outline-light>input[type=time]{
+.btn-outline-light > input[type="time"] {
   width: 30px;
   border: transparent;
   padding: 0px;
   margin: 0px;
+}
+
+.notFoundPage {
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 5rem 8rem 5rem 8rem;
+}
+
+.task-modal-container{
+  width: fit-content;
+}
+
+@media (min-width: 1440px) {
+  .background {
+    height: 100%;
+    width: 70%;
+    margin-right: 2rem;
+    background-image: url(../../assets/img/fondo.png);
+    background-size: cover;
+    background-position: center;
+  }
+}
+
+@media (max-width: 1439px) {
+  .notFoundPage {
+    background-image: url(../../assets/img/fondo.png);
+    background-size: cover;
+    background-position: center;
+    justify-content: start;
+    align-items: center;
+    padding: 2rem 4rem 2rem 4rem;
+  }
+
+  .message-error {
+    margin-top: 10rem;
+    background-color: #ffffff;
+    padding: 2rem;
+    border-radius: 2rem;
+    width: 65%;
+  }
+
+}
+
+@media (max-width: 768px) {
+  .notFoundPage {
+    background-image: url(../../assets/img/fondo.png);
+    background-size: cover;
+    background-position: center;
+    justify-content: start;
+    align-items: end;
+    padding: 2rem 4rem 2rem 4rem;
+  }
+
+  .message-error {
+    margin-top: 10rem;
+    background-color: #ffffff;
+    padding: 2rem;
+    border-radius: 2rem;
+    width: 100%;
+  }
 }

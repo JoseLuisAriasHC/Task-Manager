@@ -49,7 +49,7 @@ export class InboxComponent {
   taskList: Task[] = [];
   sortedTaskList: OrganizedTasks = {};
   updateTask = new Task();
-  description: string | null = null;
+  data: string[] = [];
   minDate: string | undefined;
   minTime: string | undefined;
 
@@ -67,10 +67,35 @@ export class InboxComponent {
   ngOnInit(): void {
     // Obtener la listas de Task
     this.route.paramMap.subscribe((params) => {
-      this.description = params.get('description') || '';
+      let searchBy = params.get('searchBy') || '';
       this.taskService.getList().subscribe((tasks) => {
-        if (this.description) {
-          this.sortedTaskList = this.taskService.getTaskListByDescription(tasks, this.description);
+        if (searchBy) {
+          this.data = searchBy.split('_');
+          console.log(this.data);
+          switch (this.data[0]) {
+            case 'date':
+              this.sortedTaskList = this.taskService.getTaskListByDate(
+                tasks,
+                this.data[1]
+              );
+              break;
+            case 'description':
+              this.sortedTaskList = this.taskService.getTaskListByDescription(
+                tasks,
+                this.data[1]
+              );
+              break;
+            case 'event':
+              this.sortedTaskList = this.taskService.getTaskListByEvent(
+                tasks,
+                this.data[1],
+                this.data[2]
+              );
+              break;
+            default:
+              this.sortedTaskList = this.taskService.getTaskListSorted(tasks);
+              break;
+          }
         } else {
           this.sortedTaskList = this.taskService.getTaskListSorted(tasks);
         }
@@ -79,6 +104,12 @@ export class InboxComponent {
 
     this.minDate = this.utilsService.getTodaysDate();
     this.minTime = this.utilsService.getCurrentTime();
+  }
+
+  hasTasks(): boolean {
+    return Object.keys(this.sortedTaskList).some(
+      (date) => Object.keys(this.sortedTaskList[date]).length > 0
+    );
   }
 
   trackByTaskId(index: number, task: Task): string {
@@ -100,6 +131,15 @@ export class InboxComponent {
         this.taskService.removeTask(task.id);
       }
     }, 300);
+
+    this.toastService.show(
+      'Tarea completada',
+      '¡Felicidades!, la tarea ' +
+        task.description +
+        ' se ha completado con éxito.',
+      'success',
+      4000
+    );
   }
 
   getEnvironment(id: string) {
@@ -129,11 +169,25 @@ export class InboxComponent {
   }
 
   onDateChange(event: Event, task: Task) {
-    this.minDate = this.utilsService.getTodaysDate();
     let inputDate = event.target as HTMLInputElement;
     let date = inputDate.value;
-    task.date = date;
-    this.taskService.updateTask(task.id, task);
+    if (this.utilsService.isDateValid(date)) {
+      this.minDate = this.utilsService.getTodaysDate();
+      if (date < this.minDate) {
+        this.toastService.show(
+          'Error al cambiar la fecha',
+          'No se puede introducir una fecha menor al actual.'
+        );
+      } else {
+        task.date = date;
+        this.taskService.updateTask(task.id, task);
+      }
+    } else {
+      this.toastService.show(
+        'Error al cambiar la fecha',
+        'No se ha introducido una fecha válida.'
+      );
+    }
   }
 
   onTimeChange(event: Event, task: Task) {

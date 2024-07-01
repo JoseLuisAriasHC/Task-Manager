@@ -38,20 +38,23 @@
             </div>
         </div>
     </div>
+
+    <!-- Delete Modal -->
     <div class="modal" aria-hidden="false" role="dialog" id="deleteModal">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">¿Seguro que quieres borrar el entorno?</h5>
+                    <h5 class="modal-title">{{ this.index === -1 ? '¿Seguro que quieres borrar el entorno?' : '¿Seguro que quieres borrar el evento?' }}</h5>
                     <button type="button" class="btn-close ms-auto" aria-label="Close" (click)="closeModal()"></button>
                 </div>
                 <div class="modal-body mb-3">
-                    Si borras el entorno <strong> {{environmentObj.name}} </strong>se borrara todas las tareas
-                    relacionadas a este.
+                    {{ this.index === -1 ? 'Si borras el entorno '+ environmentObj.name +' se borrara todas las tareas relacionadas a este. También puedes borrar el entorno pero mantener las tareas relacionadas.' : 'Si borras el evento '+ environmentObj.events[index] +' se borrara todas las tareas relacionadas a este. También puedes borrar el evento pero mantener las tareas relacionadas.' }}
                 </div>
                 <div class="modal-footer">
+                    <button type="submit" class="btn btn-primary me-auto" (click)="handleDelete()">Borrar y
+                        mantener tareas</button>
                     <button type="button" class="btn btn-secondary" (click)="closeModal()">Cerrar</button>
-                    <button type="submit" class="btn btn-primary" (click)="deleteEnvironment()">Borrar entorno</button>
+                    <button type="submit" class="btn btn-primary" (click)="handleDeleteWithTask()">{{ this.index === -1 ? 'Borrar entorno' : 'Borrar evento' }}</button>
                 </div>
             </div>
         </div>
@@ -59,11 +62,11 @@
     <hr>
     <div *ngFor="let event of environmentObj.events; let i = index" class="eventContainer">
         <div class="d-flex justify-content-between">
-            <div class="event">
+            <button class="btn border border-0" [routerLink]="['/inbox', 'event_' + environmentObj.id + '_' + event]"> 
                 <fa-icon [icon]="faHashtag" class="fs-5 me-2" [ngStyle]="{'color': environmentObj.colors[i]}"></fa-icon>
                 <span class="nameEvent">{{event}}</span>
-            </div>
-            <button class="btn btn-outline-danger" (click)="deleteEvent(i)" >
+            </button>
+            <button class="btn btn-outline-danger" (click)="openModal('deleteModal',i)">
                 <fa-icon [icon]="faTrash"></fa-icon>
             </button>
         </div>

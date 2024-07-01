@@ -22,11 +22,6 @@ h2 {
   color: #101916;
 }
 
-.event{
-    cursor: pointer;
-
-}
-
 @media (max-width: 530px) {
   .button-cointainer .btn > fa-icon {
     display: block;
