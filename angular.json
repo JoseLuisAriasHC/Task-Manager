@@ -85,7 +85,9 @@
         "deploy": {
           "builder": "angular-cli-ghpages:deploy",
           "options": {
-            "repo": "https://github.com/JoseLuisAriasHC/Task-Manager"
+            "repo": "https://github.com/JoseLuisAriasHC/Task-Manager",
+            "buildTarget": "Task-Manager:build:production",
+            "baseHref": "/Task-Manager/"
           }
         }
       }
