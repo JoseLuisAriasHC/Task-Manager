@@ -160,6 +160,10 @@
   margin: 0px;
 }
 
+.task-modal-container{
+  width: fit-content;
+}
+
 .notFoundPage {
   height: 100vh;
   display: flex;
@@ -168,9 +172,7 @@
   padding: 5rem 8rem 5rem 8rem;
 }
 
-.task-modal-container{
-  width: fit-content;
-}
+
 
 @media (min-width: 1440px) {
   .background {
@@ -188,8 +190,6 @@
     background-image: url(../../assets/img/fondo.png);
     background-size: cover;
     background-position: center;
-    justify-content: start;
-    align-items: center;
     padding: 2rem 4rem 2rem 4rem;
   }
 
@@ -203,21 +203,17 @@
 
 }
 
-@media (max-width: 768px) {
+@media (max-width: 991px) {
   .notFoundPage {
-    background-image: url(../../assets/img/fondo.png);
-    background-size: cover;
-    background-position: center;
-    justify-content: start;
-    align-items: end;
-    padding: 2rem 4rem 2rem 4rem;
+    max-height: 85.4vh;
   }
+}
 
+@media (max-width: 768px) {
   .message-error {
-    margin-top: 10rem;
-    background-color: #ffffff;
-    padding: 2rem;
-    border-radius: 2rem;
     width: 100%;
+  }
+  .inbox {
+    padding: 0rem 4rem 1rem 4rem;
   }
 }

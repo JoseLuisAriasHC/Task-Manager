@@ -6,6 +6,7 @@ import { CalendarComponent } from "./calendar/calendar.component";
 
 export const routes: Routes = [
   { path: 'event-list/:id', component: EventComponent },
+  { path: '', component: InboxComponent },
   { path: 'inbox', component: InboxComponent },
   { path: 'inbox/:searchBy', component: InboxComponent },
   { path: 'calendar', component: CalendarComponent },

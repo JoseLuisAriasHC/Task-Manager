@@ -97,19 +97,19 @@ export class EventComponent {
   }
   
   deleteEvent() {
-    this.updateEnvironmentEvent();
     this.taskService.updateTasksEnvironmentByEvent(
       this.environmentObj.id,
       this.environmentObj.events[this.index]
     );
+    this.updateEnvironmentEvent();
   }
   
   deleteEventTask() {
-    this.updateEnvironmentEvent();
     this.taskService.removeTasksByEnvironmentAndEvent(
       this.environmentObj.id,
       this.environmentObj.events[this.index]
     );
+    this.updateEnvironmentEvent();
   }
   
   removeEnvironmentAndNavigate() {

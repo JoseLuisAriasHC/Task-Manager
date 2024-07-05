@@ -1,8 +1,12 @@
 <nav class="navbar navbar-expand-lg bg-primary fixed-top">
     <!-- header de la pantalla grande -->
     <div class="d-flex justify-content-center align-items-center mx-3 div-navbar">
-        <img class="img-profile rounded-circle m-3" src="../../assets/svg/user-solid.svg" alt="UserName">
-        <a class="navbar-brand text-truncate" href="#"> UserNameUserNameUserName</a>
+        <a class="navbar-brand text-truncate" href="inbox">
+            <div class="d-flex justify-content-center align-items-center mt-3">
+                <img class="img-profile rounded-circle me-2" src="../../assets/img/favicon.jpeg" alt="UserName">
+                <h3>Task-Manager</h3>
+            </div>
+        </a>
     </div>
     <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar"
         aria-controls="offcanvasNavbar" aria-label="Toggle navigation">
@@ -11,7 +15,7 @@
     <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel">
         <!-- header de la pantalla pequeña -->
         <div class="offcanvas-header">
-            <h5 class="offcanvas-title text-truncate" id="offcanvasNavbarLabel">offcanvas</h5>
+            <h5 class="offcanvas-title text-truncate" id="offcanvasNavbarLabel">Task-Manager</h5>
             <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
         </div>
         <!-- Acciones principales del task manager -->
@@ -20,7 +24,8 @@
                 <app-task-modal [claseCSS]="claseCSS"></app-task-modal>
                 <div class="input-group btn btn-info w-100 text-start d-flex justify-content-center align-items-center">
                     <fa-icon [icon]="faMagnifyingGlass" class="me-2"></fa-icon>
-                    <input type="text" class="form-control" (keyup.enter)="searchTask($event)" placeholder="Buscador" aria-label="Buscador">
+                    <input type="text" class="form-control" (keyup.enter)="searchTask($event)" placeholder="Buscador"
+                        aria-label="Buscador">
                 </div>
                 <button class="btn btn-info w-100 text-start" routerLink="/inbox">
                     <fa-icon [icon]="faInbox" class="me-2"></fa-icon>

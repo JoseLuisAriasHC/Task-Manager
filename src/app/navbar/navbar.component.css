@@ -13,6 +13,20 @@ img.img-profile{
     height: 4rem;
     border: 0.3rem solid rgba(255, 255, 255, 0.2);
 }
+.div-navbar h3{
+  transition: opacity 0.25 ease-in-out;
+}
+.div-navbar:hover h3{
+  opacity: 0.8;
+}
+
+.navbar-toggler:hover{
+  border: solid 2px #355245;
+}
+
+.navbar-toggler:focus{
+  border: solid 2px #355245;
+}
 
 @media (min-width: 992px) {
   nav {

@@ -70,10 +70,9 @@
         <h3 *ngIf="data[0] === 'date'">No hay ninguna tarea para esta fecha.</h3>
         <h3 *ngIf="data[0] === 'event'">No hay ninguna tarea con el evento asignado.</h3>
         <h3 *ngIf="data[0] === 'description'">No hay ninguna tarea con esta descripción.</h3>
-        <h3 *ngIf="data[0] === ''">Se han completado todas las tareas de hoy.</h3>
+        <h3 *ngIf="data.length === 0">Se han completado todas las tareas de hoy.</h3>
         <p>Parece que hoy se han completado todas las tareas. Si quieres añadir otra tarea, pulsa el siguiente botón de
             abajo.</p>
-        <button class="btn btn-primary">Añadir tarea</button>
         <div class="task-modal-container">
             <app-task-modal [claseCSS]="claseCSS"></app-task-modal>
         </div>

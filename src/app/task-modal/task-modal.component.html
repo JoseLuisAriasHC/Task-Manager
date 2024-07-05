@@ -7,11 +7,10 @@
         <div class="modal-content">
             <div class="modal-body mb-3">
                 <div class="d-flex mb-2">
-                    <button type="button" class="btn-close ms-auto" aria-label="Close"
-                        (click)="closeModal()"></button>
+                    <button type="button" class="btn-close ms-auto" aria-label="Close" (click)="closeModal()"></button>
                 </div>
                 <input type="text" class="form-control fs-3 mb-3 description-task" [(ngModel)]="taskObj.description"
-                    placeholder="Descripción de la tarea" (keyup.enter)="focusDateInput()">
+                    placeholder="Descripción de la tarea" (keyup.enter)="addTask()">
                 <div class="row g-2">
                     <div class="col-md-3">
                         <input type="date" [(ngModel)]="taskObj.date" class="form-control" [min]="minDate" #dateInput>
@@ -20,7 +19,7 @@
                         <input type="time" [(ngModel)]="taskObj.time" class="form-control" (change)="onTimeChange()">
                     </div>
                     <div class="col-md-3">
-                        <select class="form-select" [(ngModel)]="taskObj.priority" placement="end" 
+                        <select class="form-select" [(ngModel)]="taskObj.priority" placement="end"
                             ngbTooltip="Del menos importante (0) al más importante (3)" triggers="hover">
                             <option value="0" disabled selected>Prioridad</option>
                             <option value="0">Prioridad 0</option>
@@ -49,8 +48,7 @@
         <div class="modal-content">
             <div class="modal-body mb-3">
                 <div class="d-flex mb-3">
-                    <button type="button" class="btn-close ms-auto" aria-label="Close"
-                        (click)="backModal()"></button>
+                    <button type="button" class="btn-close ms-auto" aria-label="Close" (click)="backModal()"></button>
                 </div>
                 <div *ngFor="let environment of environmentList; let i = index trackBy: trackByEnvironmentId"
                     class="mb-3">
@@ -62,6 +60,13 @@
                             {{event}}
                         </button>
                     </div>
+                </div>
+                <div *ngIf="environmentList && environmentList.length == 0">
+                    <h1>Ooops...</h1>
+                    <h2>No se encuentran eventos</h2>
+                    <p>
+                        No se han creado eventos, para asiganar un eventos primero debes crear un entorno con sus eventos.
+                    </p>
                 </div>
             </div>
             <div class="modal-footer">
@@ -75,4 +80,3 @@
 </div>
 
 <app-toast-container></app-toast-container>
-

@@ -118,12 +118,6 @@ export class TaskModalComponent {
     return data;
   }
 
-  focusDateInput() {
-    if (this.dateInput) {
-      this.dateInput.nativeElement.focus();
-    }
-  }
-
   onTimeChange() {
     if (
       this.minTime &&
@@ -140,7 +134,7 @@ export class TaskModalComponent {
 
   // Abrir manualmente el modal con su backdrop
   openModal(idModal: string) {
-    if (this.date && this.date == '') {
+    if (this.date && this.taskObj.date == '') {
       this.taskObj.date = this.date;
     }
     this.modalService.openModal(this.el, idModal);

@@ -71,7 +71,6 @@ export class InboxComponent {
       this.taskService.getList().subscribe((tasks) => {
         if (searchBy) {
           this.data = searchBy.split('_');
-          console.log(this.data);
           switch (this.data[0]) {
             case 'date':
               this.sortedTaskList = this.taskService.getTaskListByDate(
@@ -124,19 +123,17 @@ export class InboxComponent {
     if (taskContainer) {
       this.renderer.setStyle(taskContainer, 'opacity', 0);
     }
-
     setTimeout(() => {
       if (taskContainer) {
-        this.renderer.removeChild(taskContainer.parentNode, taskContainer);
         this.taskService.removeTask(task.id);
       }
-    }, 300);
+    }, 250);
 
     this.toastService.show(
       'Tarea completada',
-      '¡Felicidades!, la tarea ' +
+      '¡Felicidades!, la tarea "' +
         task.description +
-        ' se ha completado con éxito.',
+        '" se ha completado con éxito.',
       'success',
       4000
     );
