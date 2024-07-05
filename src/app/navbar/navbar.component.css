@@ -14,10 +14,10 @@ img.img-profile{
     border: 0.3rem solid rgba(255, 255, 255, 0.2);
 }
 .div-navbar h3{
-  transition: opacity 0.25 ease-in-out;
+  opacity: 0.8;
 }
 .div-navbar:hover h3{
-  opacity: 0.8;
+  opacity: 1;
 }
 
 .navbar-toggler:hover{
