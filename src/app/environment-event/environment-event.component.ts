@@ -84,7 +84,6 @@ export class EnvironmentEventComponent {
         // Crear badge button
         const badgeButton = this.renderer.createElement('button');
         this.renderer.addClass(badgeButton, 'badge');
-        this.renderer.addClass(badgeButton, 'text-bg-primary');
         this.renderer.addClass(badgeButton, 'position-relative');
         this.renderer.addClass(badgeButton, 'event-span');
         this.renderer.setStyle(
