@@ -1,27 +1,32 @@
-# TaskManager
+# Task-Manager
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 17.3.4.
+## Descripción
 
-## Development server
+Task-Manager es una aplicación web desarrollada con Angular para gestionar tareas. Ofrece funcionalidades para crear, actualizar, eliminar y visualizar tareas. La aplicación está diseñada para ser simple, intuitiva y responsiva, utilizando Bootstrap para el diseño y FontAwesome para los iconos.
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
+## Características
 
-## Code scaffolding
+- **Gestión de Tareas:** Crea, actualiza, elimina y visualiza tareas fácilmente.
+- **Interfaz Responsiva:** Utiliza Bootstrap para asegurar que la aplicación se vea bien en todos los dispositivos.
+- **Despliegue en GitHub Pages:** Fácil de desplegar y mantener utilizando GitHub Pages.
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+## Tecnologías Utilizadas
 
-## Build
+- **Angular 17.3.0**: Framework para aplicaciones de una sola página (SPA).
+- **Bootstrap 16.0.0**: Para diseño responsivo.
+- **FontAwesome**: Para iconos.
+- **jQuery 3.7.1 y Popper.js 2.11.8**: Para funcionalidades dinámicas y componentes de Bootstrap.
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
+## Instalación y Configuración
 
-## Running unit tests
+### Prerrequisitos
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+- **Node.js** y **npm**: Asegúrate de tener instalados Node.js y npm.
+- **Angular CLI**: Instala Angular CLI globalmente si aún no lo has hecho:
+  ```bash
+  npm install -g @angular/cli
 
-## Running end-to-end tests
-
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
-
-## Further help
-
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+## Autor
+José Luis Arias - <a hreft="https://github.com/JoseLuisAriasHC">JoseLuisAriasHC</a> 
+<hr>
+Gracias por usar Task-Manager! Si tienes alguna pregunta o sugerencia, no dudes en abrir un issue o contactar al autor.
