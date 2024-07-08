@@ -27,5 +27,5 @@ Task-Manager es una aplicación web desarrollada con Angular para gestionar tare
   npm install -g @angular/cli
 
 ## Autor
-José Luis Arias - <a hreft="https://github.com/JoseLuisAriasHC">JoseLuisAriasHC</a> 
+José Luis Arias - <a href="https://github.com/JoseLuisAriasHC">JoseLuisAriasHC</a>  <br>
 Gracias por usar Task-Manager! Si tienes alguna pregunta o sugerencia, no dudes en abrir un issue o contactar al autor.
